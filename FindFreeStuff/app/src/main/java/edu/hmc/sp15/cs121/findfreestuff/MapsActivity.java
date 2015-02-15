@@ -8,6 +8,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.Parse;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -16,8 +19,10 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
     }
 
     @Override
