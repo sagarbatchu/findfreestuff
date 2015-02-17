@@ -8,27 +8,62 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.Parse;
+
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    private ArrayList<ParseGeoPoint> freeStuff; // Private Free Stuff data member
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialize private Free Stuff data member
+        initFreeStuff();
+
+        // Set and setup the MapView
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    /**
+     * Sets up the private data member containing the Free Stuff to be
+     * displayed on the MapView. Creates the private data member if it does
+     * not already exist and adds the available Free Stuff to it.
+     *
+     * Currently, values near Claremont are hardcoded and added to a private
+     * ArrayList "freeStuff"
+     */
+    private void initFreeStuff() {
+        // Create the freeStuff data member to hold our freeStuff.
+        // Parse GeoPoints right now, should be data/model class eventually that works
+        // with Stuff objects
+        if (freeStuff == null) {
+            freeStuff = new ArrayList<ParseGeoPoint>();
+        }
+
+        // For now, hardcode some Free Stuff near Claremont
+        ParseGeoPoint stuff1 = new ParseGeoPoint(34.1067409,-117.7072027);
+        ParseGeoPoint stuff2 = new ParseGeoPoint(34.1057409,-117.7072027);
+        ParseGeoPoint stuff3 = new ParseGeoPoint(34.1047409,-117.7072027);
+        ParseGeoPoint stuff4 = new ParseGeoPoint(34.1137409,-117.7072027);
+
+        // Add our Free Stuff to our private data member
+        freeStuff.add(stuff1);
+        freeStuff.add(stuff2);
+        freeStuff.add(stuff3);
+        freeStuff.add(stuff4);
     }
 
     /**
@@ -68,11 +103,15 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         LatLng claremont = new LatLng(34.1067409,-117.7072027);
 
+        // Move initial view to Claremont, as the hardcoded free stuff is here
         mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
 
-        mMap.addMarker(new MarkerOptions().position(claremont).title("Marker"));
-
+        for (int i = 0; i < freeStuff.size(); ++i ) {
+            ParseGeoPoint freeThing = freeStuff.get(i);
+            LatLng stuff = new LatLng(freeThing.getLatitude(), freeThing.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(stuff).title(freeThing.toString()));
+        }
 
     }
 }
