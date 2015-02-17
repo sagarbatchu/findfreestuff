@@ -72,5 +72,7 @@ public class MapsActivity extends FragmentActivity {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
 
         mMap.addMarker(new MarkerOptions().position(claremont).title("Marker"));
+
+
     }
 }
