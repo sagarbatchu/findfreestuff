@@ -30,9 +30,6 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize private Free Stuff data member
-        initFreeStuff();
-
         // Set and setup the MapView
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
@@ -45,92 +42,32 @@ public class MapsActivity extends FragmentActivity {
     }
 
     /**
-     * Sets up the private data member containing the Free Stuff to be
-     * displayed on the MapView. Creates the private data member if it does
-     * not already exist and adds the available Free Stuff to it.
-     *
-     * Currently, values near Claremont are hardcoded and added to a private
-     * ArrayList "freeStuff"
+     * Retrieves Free Items from the Parse Core backend and displays them on the map
+     * as Markers.
      */
-    private void initFreeStuff() {
-        // Create the freeStuff data member to hold our freeStuff.
-        // Parse GeoPoints right now, should be data/model class eventually that works
-        // with Stuff objects
-//        if (freeStuff == null) {
-//            freeStuff = new ArrayList<ParseObject>();
-//        }
-
-//        // For now, hardcode some Free Stuff near Claremont
-//        ParseObject stuff1 = new ParseObject("FreeStuff");
-//        ParseGeoPoint stuff1Location = new ParseGeoPoint(34.1067409,-117.7072027);
-//        stuff1.put("location", stuff1Location);
-//        stuff1.put("title", "stuff1");
-//
-//        ParseObject stuff2 = new ParseObject("FreeStuff");
-//        ParseGeoPoint stuff2Location = new ParseGeoPoint(34.1057409,-117.7072027);
-//        stuff2.put("location", stuff2Location);
-//        stuff2.put("title", "stuff2");
-//
-//        ParseObject stuff3 = new ParseObject("FreeStuff");
-//        ParseGeoPoint stuff3Location = new ParseGeoPoint(34.1047409,-117.7072027);
-//        stuff3.put("location", stuff3Location);
-//        stuff3.put("title", "stuff3");
-//
-//        ParseObject stuff4 = new ParseObject("FreeStuff");
-//        ParseGeoPoint stuff4Location = new ParseGeoPoint(34.1137409,-117.7072027);
-//        stuff4.put("location", stuff4Location);
-//        stuff4.put("title", "stuff4");
-//
-//        // Add our Free Stuff to our private data member
-//        freeStuff.add(stuff1);
-//        freeStuff.add(stuff2);
-//        freeStuff.add(stuff3);
-//        freeStuff.add(stuff4);
-
-
-
+    private void displayFreeStuff() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeStuff");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
                 if (e == null) {
-
-                    System.out.println(freeStuffList.toArray().toString());
-                    System.out.println("stuff list is length: " + freeStuffList.size());
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
-
-//                        ParseObject freeThingOriginal = freeStuffList.get(i);
-//                        final ParseObject freeThingCopy = new ParseObject("FreeStuff");
-//                        ParseGeoPoint freeThingLocation = freeThingOriginal.getParseGeoPoint("location");
-//                        if (freeThingLocation != null) {
-//                            freeThingCopy.put("location", freeThingOriginal.getParseGeoPoint("location"));
-//                            freeThingCopy.put("title", freeThingOriginal.getString("title"));
-//                            freeStuff.add(freeThingCopy);
-//                        } else {
-//                            System.out.println("free stuff had no location");
-//                        }
-
+                        // For each Free Item from Parse, if it has a "location" data member
+                        // display it on the Map
                         ParseObject freeThing = freeStuffList.get(i);
                         ParseGeoPoint freeThingLocation = freeThing.getParseGeoPoint("location");
+
                         if (freeThingLocation != null) {
                             LatLng stuff = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
+
                             mMap.addMarker(new MarkerOptions().position(stuff).title(freeThing.getString("title")));
                             freeStuff.add(freeThing);
                         }
                     }
-
-                    System.out.println("free stuff is of size :" + freeStuff.size());
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
                 }
             }
         });
-
-        System.out.println(freeStuff.size());
-
-//        for (int i = 0; i < freeStuff.size(); ++i ) {
-//            ParseObject freeThing = freeStuff.get(i);
-//            freeThing.saveInBackground();
-//        }
     }
 
     /**
@@ -177,15 +114,8 @@ public class MapsActivity extends FragmentActivity {
         // Set zoom controls enabled, really helps with emulator
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        System.out.println("free stuff is of sizeE :" + freeStuff.size());
-
-        for (int i = 0; i < freeStuff.size(); ++i ) {
-            //ParseObject freeThing = freeStuff.get(i);
-            //System.out.println("free thing is: " + freeThing.toString());
-            //ParseGeoPoint freeThingLocation = freeThing.getParseGeoPoint("location");
-            //LatLng stuff = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
-            //mMap.addMarker(new MarkerOptions().position(stuff).title(freeThing.getString("title")));
-        }
+        // Sync down and display the Free Items from the Parse Core backend
+        displayFreeStuff();
 
     }
 }
