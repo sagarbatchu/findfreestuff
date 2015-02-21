@@ -82,6 +82,7 @@ public class PostActivity extends Activity {
     private void updatePostButtonState () {
         int length1 = getPostEditTextTitleText().length();
         int length2 = getPostEditTextDetailsText().length();
+        //make sure they entered a title and description
         boolean enabled = length1 > 0 && length2 > 0;
         postButton.setEnabled(enabled);
     }

@@ -39,11 +39,12 @@ public class ItemActivity extends Activity {
         Location location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
         geopoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
+        //get the item id that the MapActivity hopefully sent through
         Bundle b = intent.getExtras();
         if(b != null) {
             id = b.getString("itemID");
         }
-
+        //find the requested item
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeItem");
         query.getInBackground(id, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
@@ -58,6 +59,7 @@ public class ItemActivity extends Activity {
         titleText = (TextView) findViewById(R.id.item_Title);
         detailsText = (TextView) findViewById(R.id.item_Details);
 
+        //set up button
         claimButton = (Button) findViewById(R.id.item_ClaimButton);
         claimButton.setEnabled(true);
         claimButton.setOnClickListener(new View.OnClickListener() {
@@ -66,12 +68,14 @@ public class ItemActivity extends Activity {
             }
         });
 
+        //set textfield text with item title/details
         if (item != null) {
             String title = item.getPostTitle();
             titleText.setText(title.toCharArray(), 0, title.length());
             String details = item.getPostDetails();
             detailsText.setText(details.toCharArray(), 0, details.length());
         }
+        //in case we can't find the item
         else {
             CharSequence text = "Could Not Find Requested Item";
             int duration = Toast.LENGTH_LONG;
@@ -82,6 +86,7 @@ public class ItemActivity extends Activity {
     }
 
     private void claim () {
+        //if we are close enough delete the item from parse
         if (geopoint.distanceInKilometersTo(item.getLocation()) < .25) {
             //delete item from parse
             item.deleteInBackground();
@@ -90,6 +95,7 @@ public class ItemActivity extends Activity {
             Toast toast = Toast.makeText(context, congrats, duration);
             toast.show();
         }
+        //otherwise you have to get closer
         else {
             //error message
             CharSequence error = "You are not close enough to this item to claim it.";
