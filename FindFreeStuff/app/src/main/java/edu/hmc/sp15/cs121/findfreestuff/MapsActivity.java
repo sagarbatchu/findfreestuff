@@ -57,9 +57,9 @@ public class MapsActivity extends FragmentActivity {
                         ParseGeoPoint freeThingLocation = freeThing.getParseGeoPoint("location");
 
                         if (freeThingLocation != null) {
-                            LatLng stuff = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
+                            LatLng freeThingLatLong = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
+                            mMap.addMarker(new MarkerOptions().position(freeThingLatLong).title(freeThing.getString("title")));
 
-                            mMap.addMarker(new MarkerOptions().position(stuff).title(freeThing.getString("title")));
                             FreeItem newFreeItem = new FreeItem();
                             newFreeItem.setLocation(freeThingLocation);
                             freeStuff.add(newFreeItem);
