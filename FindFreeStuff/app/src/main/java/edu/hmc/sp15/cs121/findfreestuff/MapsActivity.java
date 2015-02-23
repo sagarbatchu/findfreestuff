@@ -24,7 +24,7 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private final ArrayList<ParseObject> freeStuff = new ArrayList<>(); // Private Free Stuff data member
+    private final ArrayList<FreeItem> freeStuff = new ArrayList<>(); // Private Free Stuff data member
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,9 @@ public class MapsActivity extends FragmentActivity {
                             LatLng stuff = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
 
                             mMap.addMarker(new MarkerOptions().position(stuff).title(freeThing.getString("title")));
-                            freeStuff.add(freeThing);
+                            FreeItem newFreeItem = new FreeItem();
+                            newFreeItem.setLocation(freeThingLocation);
+                            freeStuff.add(newFreeItem);
                         }
                     }
                 } else {
