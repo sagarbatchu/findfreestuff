@@ -2,33 +2,74 @@ package edu.hmc.sp15.cs121.findfreestuff;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    private final ArrayList<FreeItem> freeStuff = new ArrayList<>(); // Private Free Stuff data member
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set and setup the MapView
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    /**
+     * Retrieves Free Items from the Parse Core backend and displays them on the map
+     * as Markers.
+     */
+    private void displayFreeStuff() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeStuff");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> freeStuffList, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < freeStuffList.size(); ++i ) {
+                        // For each Free Item from Parse, if it has a "location" data member
+                        // display it on the Map
+                        ParseObject freeThing = freeStuffList.get(i);
+                        ParseGeoPoint freeThingLocation = freeThing.getParseGeoPoint("location");
+
+                        if (freeThingLocation != null) {
+                            LatLng freeThingLatLong = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
+                            mMap.addMarker(new MarkerOptions().position(freeThingLatLong).title(freeThing.getString("title")));
+
+                            FreeItem newFreeItem = new FreeItem();
+                            newFreeItem.setLocation(freeThingLocation);
+                            freeStuff.add(newFreeItem);
+                        }
+                    }
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
     /**
@@ -68,9 +109,15 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         LatLng claremont = new LatLng(34.1067409,-117.7072027);
 
+        // Move initial view to Claremont, as the hardcoded free stuff is here
         mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
 
-        mMap.addMarker(new MarkerOptions().position(claremont).title("Marker"));
+        // Set zoom controls enabled, really helps with emulator
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // Sync down and display the Free Items from the Parse Core backend
+        displayFreeStuff();
+
     }
 }
