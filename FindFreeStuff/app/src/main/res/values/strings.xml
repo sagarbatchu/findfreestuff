@@ -3,5 +3,6 @@
 
     <string name="app_name">Find Free Stuff</string>
     <string name="title_activity_maps">Map</string>
+    <string name="progress_post">Posting...</string>
 
 </resources>

@@ -119,5 +119,15 @@ public class MapsActivity extends FragmentActivity {
         // Sync down and display the Free Items from the Parse Core backend
         displayFreeStuff();
 
+        mMap.addMarker(new MarkerOptions().position(claremont).title("Marker"));
+        //VERY IMPORTANT!!!
+        //include this when we add clickable free item markers to the map screen
+        //so that the ItemActivity can have a reference to the free item
+        //in the itemIsClicked (or whatever name of your choosing) method,
+        //include:
+        //Intent i = new Intent(this, TheNextActivity.class);
+        //i.putExtra("itemID", this item.getObjectId());
+        //startItemActivity(i);
+
     }
 }
