@@ -35,6 +35,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".PostActivity"
+            android:label="@string/activity_post_title"
+            android:windowSoftInputMode="adjustResize" />
+
+
     </application>
 
 </manifest>

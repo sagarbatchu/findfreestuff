@@ -20,21 +20,22 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-/**
- * Activity which displays a login screen to the user, offering registration as well.
- */
+
+
 public class PostActivity extends Activity {
     // UI references.
     private EditText postEditTextTitle;
     private EditText postEditTextDetails;
     private Button postButton;
     private ParseGeoPoint geoPoint;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         Intent intent = getIntent();
         Location location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
+
         geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         postEditTextTitle = (EditText) findViewById(R.id.post_editTextTitle);
         postEditTextDetails = (EditText) findViewById(R.id.post_editTextDetails);
@@ -46,25 +47,30 @@ public class PostActivity extends Activity {
         });
         updatePostButtonState();
     }
+
     private void post () {
         String text = postEditTextTitle.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
-// Set up a progress dialog
+
+        // Set up a progress dialog
         final ProgressDialog dialog = new ProgressDialog(PostActivity.this);
         dialog.setMessage(getString(R.string.progress_post));
         dialog.show();
-// Create a post.
+
+        // Create a post.
         FreeItem post = new FreeItem();
-// Set the location to the current user's location
+        // Set the location to the current user's location
         post.setLocation(geoPoint);
         post.setPostDetails(text);
         post.setPostTitle(title);
         post.setUser(ParseUser.getCurrentUser());
         ParseACL acl = new ParseACL();
-// Give public read access
+
+        // Give public read access
         acl.setPublicReadAccess(true);
         post.setACL(acl);
-// Save the post
+
+        // Save the post
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -73,15 +79,19 @@ public class PostActivity extends Activity {
             }
         });
     }
+
     private String getPostEditTextTitleText () {
         return postEditTextTitle.getText().toString().trim();
     }
+
     private String getPostEditTextDetailsText () {
         return postEditTextDetails.getText().toString().trim();
     }
+
     private void updatePostButtonState () {
         int length1 = getPostEditTextTitleText().length();
         int length2 = getPostEditTextDetailsText().length();
+
         //make sure they entered a title and description
         boolean enabled = length1 > 0 && length2 > 0;
         postButton.setEnabled(enabled);
