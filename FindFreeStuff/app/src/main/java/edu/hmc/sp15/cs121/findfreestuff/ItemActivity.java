@@ -56,6 +56,10 @@ public class ItemActivity extends Activity {
             }
         });
 
+        //when we have a ParseUser logged in and can access its data
+        //if(item.getUser() == current user)
+        //then set up the page so that the user can edit the details/delete
+
         titleText = (TextView) findViewById(R.id.item_Title);
         detailsText = (TextView) findViewById(R.id.item_Details);
 
