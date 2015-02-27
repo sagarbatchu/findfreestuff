@@ -5,6 +5,7 @@ package edu.hmc.sp15.cs121.findfreestuff;
  */
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -28,6 +31,7 @@ public class PostActivity extends Activity {
     private EditText postEditTextDetails;
     private Button postButton;
     private ParseGeoPoint geoPoint;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,39 +49,49 @@ public class PostActivity extends Activity {
                 post();
             }
         });
-        updatePostButtonState();
+        postButton.setEnabled(true);
+
+        context = getApplicationContext();
     }
 
     private void post () {
         String text = postEditTextTitle.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
 
-        // Set up a progress dialog
-        final ProgressDialog dialog = new ProgressDialog(PostActivity.this);
-        dialog.setMessage(getString(R.string.progress_post));
-        dialog.show();
+        if(text.length() == 0 || title.length() == 0) {
+            CharSequence alert = "Please enter a title and post details";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, alert, duration);
+            toast.show();
+        }
+        else {
+            // Set up a progress dialog
+            final ProgressDialog dialog = new ProgressDialog(PostActivity.this);
+            dialog.setMessage(getString(R.string.progress_post));
+            dialog.show();
 
-        // Create a post.
-        FreeItem post = new FreeItem();
-        // Set the location to the current user's location
-        post.setLocation(geoPoint);
-        post.setPostDetails(text);
-        post.setPostTitle(title);
-        post.setUser(ParseUser.getCurrentUser());
-        ParseACL acl = new ParseACL();
+            // Create a post.
+            FreeItem post = new FreeItem();
+            // Set the location to the current user's location
+            post.setLocation(geoPoint);
+            post.setPostDetails(text);
+            post.setPostTitle(title);
+            //post.setUser(ParseUser.getCurrentUser());
+            ParseACL acl = new ParseACL();
 
-        // Give public read access
-        acl.setPublicReadAccess(true);
-        post.setACL(acl);
+            // Give public read access
+            acl.setPublicReadAccess(true);
+            post.setACL(acl);
 
-        // Save the post
-        post.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                dialog.dismiss();
-                finish();
-            }
-        });
+            // Save the post
+            post.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+        }
     }
 
     private String getPostEditTextTitleText () {
@@ -86,15 +100,6 @@ public class PostActivity extends Activity {
 
     private String getPostEditTextDetailsText () {
         return postEditTextDetails.getText().toString().trim();
-    }
-
-    private void updatePostButtonState () {
-        int length1 = getPostEditTextTitleText().length();
-        int length2 = getPostEditTextDetailsText().length();
-
-        //make sure they entered a title and description
-        boolean enabled = length1 > 0 && length2 > 0;
-        postButton.setEnabled(enabled);
     }
 
 }
