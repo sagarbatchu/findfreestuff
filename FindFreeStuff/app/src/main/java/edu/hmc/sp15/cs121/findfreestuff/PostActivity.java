@@ -43,7 +43,7 @@ public class PostActivity extends Activity {
         geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         postEditTextTitle = (EditText) findViewById(R.id.post_editTextTitle);
         postEditTextDetails = (EditText) findViewById(R.id.post_editTextDetails);
-        postButton = (Button) findViewById(R.id.post_button);
+        postButton = (Button) findViewById(R.id.post_PostButton);
         postButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 post();
