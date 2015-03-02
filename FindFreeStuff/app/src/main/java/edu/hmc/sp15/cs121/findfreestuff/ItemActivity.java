@@ -38,7 +38,7 @@ public class ItemActivity extends Activity {
         Intent intent = getIntent();
 
         Location currentLocation = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
-        geopoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+        geopoint = currentLocation != null ? new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()) : new ParseGeoPoint();
 
         //get the item id that the MapActivity hopefully sent through
         Bundle b = intent.getExtras();
