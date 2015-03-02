@@ -49,7 +49,7 @@ public class PostActivity extends Activity {
     }
 
     private void post () {
-        String text = postEditTextTitle.getText().toString().trim();
+        String text = postEditTextDetails.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
 
         // Set up a progress dialog
@@ -63,12 +63,12 @@ public class PostActivity extends Activity {
         post.setLocation(geoPoint);
         post.setPostDetails(text);
         post.setPostTitle(title);
-        post.setUser(ParseUser.getCurrentUser());
-        ParseACL acl = new ParseACL();
+        //post.setUser(ParseUser.getCurrentUser());
+        //ParseACL acl = new ParseACL();
 
         // Give public read access
-        acl.setPublicReadAccess(true);
-        post.setACL(acl);
+        //acl.setPublicReadAccess(true);
+        //post.setACL(acl);
 
         // Save the post
         post.saveInBackground(new SaveCallback() {
@@ -93,7 +93,8 @@ public class PostActivity extends Activity {
         int length2 = getPostEditTextDetailsText().length();
 
         //make sure they entered a title and description
-        boolean enabled = length1 > 0 && length2 > 0;
+        //boolean enabled = length1 > 0 && length2 > 0;
+        boolean enabled = true;
         postButton.setEnabled(enabled);
     }
 
