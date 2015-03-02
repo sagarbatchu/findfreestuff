@@ -196,9 +196,14 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 if (e == null) {
                     marker.showInfoWindow();
 
+                    Intent intent = new Intent(MapsActivity.this, ItemActivity.class);
+                    intent.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
+                    intent.putExtra("itemID", freeItem.getObjectId());
+                    startActivity(intent);
+
                     // We will replace this toast with opening the Item Activity
-                    Toast.makeText(MapsActivity.this,
-                           "Poster: " + freeItem.getParseUser("user").getUsername() + ". Details: " + freeItem.getString("details"), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MapsActivity.this,
+//                           "Poster: " + freeItem.getParseUser("user").getUsername() + ". Details: " + freeItem.getString("details"), Toast.LENGTH_SHORT).show();
                     return;
                 // If the free item does not actually exist, remove it from our hash maps
                 // and remove its marker from the map
@@ -225,6 +230,13 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     // For each Free Item from Parse, if it has a "location" data member
                     // display it on the Map with a marker
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
+
+
+                        //// MODIFY so this updates a currentFreeItems list and then we have an
+                        // updateMarkers(currentFreeItems) that will properly remove Items,
+                        // we can call this when we resume the app
+
+
                         // Grab the free item from the list returned by the Parse Query
                         // and try to extract its location/ID
                         ParseObject freeItem = freeStuffList.get(i);
@@ -251,7 +263,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                         }
                     }
                 } else {
-                    Log.d("score", "Error: " + e.getMessage());
+                    Log.d("Logging Message", "Error: " + e.getMessage());
                 }
             }
         });

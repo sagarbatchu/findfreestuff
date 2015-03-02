@@ -79,8 +79,9 @@ public class PostActivity extends Activity {
             post.setUser(ParseUser.getCurrentUser());
             ParseACL acl = new ParseACL();
 
-            // Give public read access
+            // Give public read and write access (so they can create and claim items)
             acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
             post.setACL(acl);
 
             // Save the post

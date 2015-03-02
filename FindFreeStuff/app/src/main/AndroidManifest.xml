@@ -67,6 +67,11 @@
             android:label="@string/activity_post_title"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ItemActivity"
+            android:label="@string/title_item_activity"
+            android:screenOrientation="portrait" />
+
 
     </application>
 
