@@ -204,6 +204,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     // We will replace this toast with opening the Item Activity
 //                    Toast.makeText(MapsActivity.this,
 //                           "Poster: " + freeItem.getParseUser("user").getUsername() + ". Details: " + freeItem.getString("details"), Toast.LENGTH_SHORT).show();
+
                     return;
                 // If the free item does not actually exist, remove it from our hash maps
                 // and remove its marker from the map
