@@ -21,11 +21,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -33,21 +35,28 @@ import com.parse.ParseQuery;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements LocationListener,
+        GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>(); // Maps Parse Object IDs to Markers
+    private final Map<String, String> markerIDs = new HashMap<String, String>(); // Maps Marker IDs to Parse Object IDs
+
     private final ArrayList<FreeItem> freeStuff = new ArrayList<>(); // Private Free Stuff data member
 
     private LocationRequest locationRequest;
-    private Location lastLocation;
     private Location currentLocation;
 
     private GoogleApiClient mGoogleApiClient;
+
+    private String freeItemParseName = "FreeItem";
 
     ///////////////////////////// Activity Lifetime Functions /////////////////////////////////////
 
@@ -72,7 +81,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         postButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Only allow posts if we have a location
-                Location myLoc = (currentLocation == null) ? lastLocation : currentLocation;
+                Location myLoc = (currentLocation == null) ? null : currentLocation;
                 if (myLoc == null) {
                     Toast.makeText(MapsActivity.this,
                             "Please try again after your location appears on the map.", Toast.LENGTH_LONG).show();
@@ -92,6 +101,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        displayFreeStuff();
     }
 
     /////////////////////////// Setup, UI, and Data Manipulation Functions /////////////////////////
@@ -117,6 +127,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
+
+            mMap.setOnMarkerClickListener(this);
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
@@ -156,27 +168,73 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     }
 
     /**
+     * Called when a marker on the map is selected. Currently, just displays information
+     * associated with the marker, but will eventually open a new ItemActivity.
+     */
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        final String freeItemID = markerIDs.get(marker.getId());
+        // Create and make a Parse Query for a free item with
+        // the ID associated with this marker
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+        query.getInBackground(freeItemID, new GetCallback<ParseObject>() {
+            public void done(ParseObject freeItem, ParseException e) {
+                // If the free item actually exists, display its details
+                if (e == null) {
+                    marker.showInfoWindow();
+
+                    // We will replace this toast with opening the Item Activity
+                    Toast.makeText(MapsActivity.this,
+                            freeItem.getString("details"), Toast.LENGTH_SHORT).show();
+                    return;
+                // If the free item does not actually exist, remove it from our hash maps
+                // and remove its marker from the map
+                } else {
+                    mapMarkers.remove(freeItemID);
+                    markerIDs.remove(marker.getId());
+                    marker.remove();
+                }
+            }
+        });
+
+        return true;
+    }
+
+    /**
      * Retrieves Free Items from the Parse Core backend and displays them on the map
      * as Markers.
      */
     private void displayFreeStuff() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeStuff");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
                 if (e == null) {
+                    // For each Free Item from Parse, if it has a "location" data member
+                    // display it on the Map with a marker
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
-                        // For each Free Item from Parse, if it has a "location" data member
-                        // display it on the Map
-                        ParseObject freeThing = freeStuffList.get(i);
-                        ParseGeoPoint freeThingLocation = freeThing.getParseGeoPoint("location");
+                        // Grab the free item from the list returned by the Parse Query
+                        // and try to extract its location/ID
+                        ParseObject freeItem = freeStuffList.get(i);
+                        String freeItemID = freeItem.getObjectId();
+                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
+                        // Try to grab existing marker for this free item
+                        Marker freeItemMarker = mapMarkers.get(freeItemID);
+                        // If the marker does not already exist
+                        if (freeItemMarker == null) {
+                            // If the location value of the Parse Object exists
+                            if (freeItemLocation != null) {
+                                // Put a marker on the map with the proper information
+                                LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
+                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString("title")));
+                                // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
+                                mapMarkers.put(freeItemID, newMarker);
+                                // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
+                                markerIDs.put(newMarker.getId(), freeItemID);
 
-                        if (freeThingLocation != null) {
-                            LatLng freeThingLatLong = new LatLng(freeThingLocation.getLatitude(), freeThingLocation.getLongitude());
-                            mMap.addMarker(new MarkerOptions().position(freeThingLatLong).title(freeThing.getString("title")));
-
-                            FreeItem newFreeItem = new FreeItem();
-                            newFreeItem.setLocation(freeThingLocation);
-                            freeStuff.add(newFreeItem);
+                                FreeItem newFreeItem = new FreeItem();
+                                newFreeItem.setLocation(freeItemLocation);
+                                freeStuff.add(newFreeItem);
+                            }
                         }
                     }
                 } else {
@@ -193,14 +251,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      */
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        if (lastLocation != null) {
-            // If the location hasn't changed by more than 10 meters, ignore it.
-            return;
-        }
-        lastLocation = location;
-        LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-
+        displayFreeStuff();
     }
 
     @Override
@@ -222,13 +274,11 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      * this point, you can request the current location or start periodic updates
      */
     public void onConnected(Bundle bundle) {
-
-        System.out.println("WE ARE IN ON CONNECTED AND ARE GETTING THE LOCATION");
-
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(1000); // Update location every second
 
+        // Start location updates
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, locationRequest, this);
     }

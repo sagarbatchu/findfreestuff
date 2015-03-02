@@ -55,7 +55,7 @@ public class PostActivity extends Activity {
     }
 
     private void post () {
-        String text = postEditTextTitle.getText().toString().trim();
+        String text = postEditTextDetails.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
 
         if(text.length() == 0 || title.length() == 0) {
@@ -100,6 +100,16 @@ public class PostActivity extends Activity {
 
     private String getPostEditTextDetailsText () {
         return postEditTextDetails.getText().toString().trim();
+    }
+
+    private void updatePostButtonState () {
+        int length1 = getPostEditTextTitleText().length();
+        int length2 = getPostEditTextDetailsText().length();
+
+        //make sure they entered a title and description
+        //boolean enabled = length1 > 0 && length2 > 0;
+        boolean enabled = true;
+        postButton.setEnabled(enabled);
     }
 
 }

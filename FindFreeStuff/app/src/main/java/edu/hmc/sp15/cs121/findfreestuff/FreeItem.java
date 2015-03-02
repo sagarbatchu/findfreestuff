@@ -11,7 +11,7 @@ import com.parse.ParseUser;
 /**
  * Data model for a free thing.
  */
-@ParseClassName("Posts")
+@ParseClassName("FreeItem")
 public class FreeItem extends ParseObject {
     public String getPostTitle() {
         return getString("title");
