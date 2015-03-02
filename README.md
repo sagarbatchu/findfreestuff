@@ -7,4 +7,6 @@ This project relies on the [Google Play Services SDK](https://developer.android.
 
 ## Development Notes
 ### Emulator GPS
-To develop on this app, it is necessary to be able to move your current location on the Emulator. To do this, we use `telnet` to connect to our Emulator and then feed it commands to simulate different GPS locations. If we have one instance of the Emulator running it will be on port 5554, so the command we run to connect is `telnet localhost 5554`. Once connected to the emulator, we set the GPS location with the command `geo fix <longitude value> <latitude value>`.
+Note: __You must do this for the Emulator to have any GPS location at all.__
+
+To develop for this app, it is necessary to be able to register (otherwise your `currentLocation` will always be null as the emulator does not know how to find its GPS location) and move your current location on the Emulator. To do this, we use `telnet` to connect to our Emulator and then feed it commands to simulate different GPS locations. If we have one instance of the Emulator running it will be on port 5554, so the command we run to connect is `telnet localhost 5554`. Once connected to the emulator, we set the GPS location with the command `geo fix <longitude value> <latitude value>`. For reference, a `<long> <lat>` value near HMC is `-117.707 34.107`.

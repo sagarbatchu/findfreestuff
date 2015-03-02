@@ -76,11 +76,12 @@ public class PostActivity extends Activity {
             post.setLocation(geoPoint);
             post.setPostDetails(text);
             post.setPostTitle(title);
-            //post.setUser(ParseUser.getCurrentUser());
+            post.setUser(ParseUser.getCurrentUser());
             ParseACL acl = new ParseACL();
 
-            // Give public read access
+            // Give public read and write access (so they can create and claim items)
             acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
             post.setACL(acl);
 
             // Save the post
@@ -92,24 +93,6 @@ public class PostActivity extends Activity {
                 }
             });
         }
-    }
-
-    private String getPostEditTextTitleText () {
-        return postEditTextTitle.getText().toString().trim();
-    }
-
-    private String getPostEditTextDetailsText () {
-        return postEditTextDetails.getText().toString().trim();
-    }
-
-    private void updatePostButtonState () {
-        int length1 = getPostEditTextTitleText().length();
-        int length2 = getPostEditTextDetailsText().length();
-
-        //make sure they entered a title and description
-        //boolean enabled = length1 > 0 && length2 > 0;
-        boolean enabled = true;
-        postButton.setEnabled(enabled);
     }
 
 }

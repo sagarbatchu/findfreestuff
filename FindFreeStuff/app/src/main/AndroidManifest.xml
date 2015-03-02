@@ -29,6 +29,21 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/app_name" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".DispatchActivity"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,9 +52,25 @@
         </activity>
 
         <activity
+            android:name=".WelcomeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo" />
+
+        <activity
+            android:name=".SignUpActivity"
+            android:label="@string/title_activity_signup"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".PostActivity"
             android:label="@string/activity_post_title"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ItemActivity"
+            android:label="@string/title_item_activity"
+            android:screenOrientation="portrait" />
 
 
     </application>

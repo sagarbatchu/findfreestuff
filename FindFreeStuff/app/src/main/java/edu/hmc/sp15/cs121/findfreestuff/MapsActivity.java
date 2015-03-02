@@ -33,6 +33,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +95,19 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             }
         });
 
+        // Set up the handler for the logout button click
+        Button logoutButton = (Button) findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Call the Parse log out method
+                ParseUser.logOut();
+                // Start and intent for the dispatch activity
+                Intent intent = new Intent(MapsActivity.this, DispatchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
         displayFreeStuff();
     }
 
@@ -145,7 +159,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     private void setUpMap() {
         LatLng claremont = new LatLng(34.1067409,-117.7072027);
 
-        // Move initial view to Claremont, as the hardcoded free stuff is here
+        // Move initial view to Claremont, as emulator doesn't like initializing with GPS location
         mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
 
@@ -155,7 +169,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         // Sync down and display the Free Items from the Parse Core backend
         displayFreeStuff();
 
-        mMap.addMarker(new MarkerOptions().position(claremont).title("Marker"));
         //VERY IMPORTANT!!!
         //include this when we add clickable free item markers to the map screen
         //so that the ItemActivity can have a reference to the free item
@@ -183,9 +196,14 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 if (e == null) {
                     marker.showInfoWindow();
 
+                    Intent intent = new Intent(MapsActivity.this, ItemActivity.class);
+                    intent.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
+                    intent.putExtra("itemID", freeItem.getObjectId());
+                    startActivity(intent);
+
                     // We will replace this toast with opening the Item Activity
-                    Toast.makeText(MapsActivity.this,
-                            freeItem.getString("details"), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MapsActivity.this,
+//                           "Poster: " + freeItem.getParseUser("user").getUsername() + ". Details: " + freeItem.getString("details"), Toast.LENGTH_SHORT).show();
                     return;
                 // If the free item does not actually exist, remove it from our hash maps
                 // and remove its marker from the map
@@ -212,6 +230,13 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     // For each Free Item from Parse, if it has a "location" data member
                     // display it on the Map with a marker
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
+
+
+                        //// MODIFY so this updates a currentFreeItems list and then we have an
+                        // updateMarkers(currentFreeItems) that will properly remove Items,
+                        // we can call this when we resume the app
+
+
                         // Grab the free item from the list returned by the Parse Query
                         // and try to extract its location/ID
                         ParseObject freeItem = freeStuffList.get(i);
@@ -238,7 +263,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                         }
                     }
                 } else {
-                    Log.d("score", "Error: " + e.getMessage());
+                    Log.d("Logging Message", "Error: " + e.getMessage());
                 }
             }
         });
