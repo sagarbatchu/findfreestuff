@@ -43,20 +43,6 @@
         android:text="Update Distance"
         android:id="@+id/preferences_setDistanceButton" />
 
-    <Button
-        android:layout_width="156dp"
-        android:layout_height="wrap_content"
-        android:text="View Wishlist"
-        android:id="@+id/preferences_wishlistButton"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="155dp"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:id="@+id/logout_button"
-        android:layout_gravity="right" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
