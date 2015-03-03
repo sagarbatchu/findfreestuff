@@ -37,8 +37,10 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements LocationListener,
         GoogleMap.OnMarkerClickListener,
@@ -49,8 +51,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
     private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>(); // Maps Parse Object IDs to Markers
     private final Map<String, String> markerIDs = new HashMap<String, String>(); // Maps Marker IDs to Parse Object IDs
-
-    private final ArrayList<FreeItem> freeStuff = new ArrayList<>(); // Private Free Stuff data member
 
     private LocationRequest locationRequest;
     private Location currentLocation;
@@ -168,16 +168,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
         // Sync down and display the Free Items from the Parse Core backend
         displayFreeStuff();
-
-        //VERY IMPORTANT!!!
-        //include this when we add clickable free item markers to the map screen
-        //so that the ItemActivity can have a reference to the free item
-        //in the itemIsClicked (or whatever name of your choosing) method,
-        //include:
-        //Intent i = new Intent(this, TheNextActivity.class);
-        //i.putExtra("itemID", this item.getObjectId());
-        //startItemActivity(i);
-
     }
 
     /**
@@ -201,9 +191,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     intent.putExtra("itemID", freeItem.getObjectId());
                     startActivity(intent);
 
-                    // We will replace this toast with opening the Item Activity
-//                    Toast.makeText(MapsActivity.this,
-//                           "Poster: " + freeItem.getParseUser("user").getUsername() + ". Details: " + freeItem.getString("details"), Toast.LENGTH_SHORT).show();
                     return;
                 // If the free item does not actually exist, remove it from our hash maps
                 // and remove its marker from the map
@@ -227,21 +214,19 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
                 if (e == null) {
+                    // Create HashSet of markers to keep on the map
+                    Set<String> toKeep = new HashSet<String>();
+
                     // For each Free Item from Parse, if it has a "location" data member
                     // display it on the Map with a marker
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
-
-
-                        //// MODIFY so this updates a currentFreeItems list and then we have an
-                        // updateMarkers(currentFreeItems) that will properly remove Items,
-                        // we can call this when we resume the app
-
-
                         // Grab the free item from the list returned by the Parse Query
                         // and try to extract its location/ID
                         ParseObject freeItem = freeStuffList.get(i);
                         String freeItemID = freeItem.getObjectId();
                         ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
+                        // Add the marker to the to list of markers to keep on the map
+                        toKeep.add(freeItemID);
                         // Try to grab existing marker for this free item
                         Marker freeItemMarker = mapMarkers.get(freeItemID);
                         // If the marker does not already exist
@@ -255,19 +240,33 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                                 mapMarkers.put(freeItemID, newMarker);
                                 // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
                                 markerIDs.put(newMarker.getId(), freeItemID);
-
-                                FreeItem newFreeItem = new FreeItem();
-                                newFreeItem.setLocation(freeItemLocation);
-                                freeStuff.add(newFreeItem);
                             }
                         }
                     }
+                    // Clean up all of the markers that are not in toKeep
+                    cleanUpMarkers(toKeep);
                 } else {
                     Log.d("Logging Message", "Error: " + e.getMessage());
                 }
             }
         });
     }
+
+    /*
+     * Helper method to clean up old markers
+     */
+        private void cleanUpMarkers(Set<String> markersToKeep) {
+            for (String objId : new HashSet<String>(mapMarkers.keySet())) {
+                if (!markersToKeep.contains(objId)) {
+                    Marker marker = mapMarkers.get(objId);
+                    markerIDs.remove(marker.getId());
+                    marker.remove();
+                    mapMarkers.get(objId).remove();
+                    mapMarkers.remove(objId);
+                }
+            }
+        }
+
 
     ///////////////////// Google Play Location Services Functions //////////////////////////////////
 
