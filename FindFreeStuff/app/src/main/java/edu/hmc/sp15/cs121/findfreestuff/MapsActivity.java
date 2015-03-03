@@ -101,13 +101,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             public void onClick(View v) {
                 // Call the Parse log out method
                 ParseUser.logOut();
-                // Start and intent for the dispatch activity
+                // Start an intent for the dispatch activity
                 Intent intent = new Intent(MapsActivity.this, DispatchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
 
+        //Set up the handler for the Preferences button click
+        Button preferencesButton = (Button) findViewById(R.id.preferences_button);
+        preferencesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Start an intent for the preferences activity
+                Intent intent = new Intent(MapsActivity.this, PreferencesActivity.class);
+                startActivity(intent);
+            }
+        });
         displayFreeStuff();
     }
 

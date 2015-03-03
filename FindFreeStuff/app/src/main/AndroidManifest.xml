@@ -72,6 +72,11 @@
             android:label="@string/title_item_activity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="@string/title_activity_preferences"
+            android:windowSoftInputMode="adjustResize" />
+
 
     </application>
 
