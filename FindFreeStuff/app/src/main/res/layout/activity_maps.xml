@@ -12,49 +12,29 @@
 
 <Button
     android:id="@+id/post_button"
-    android:layout_width="125dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/post"
     android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
-    <Button
-        android:layout_width="109dp"
-        android:layout_height="wrap_content"
-        android:text="Preferences"
-        android:id="@+id/preferences_button"
-        android:layout_gravity="center_horizontal" />
+<Button
+    android:id="@+id/list_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="List of Items"
+    android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="List View"
-        android:id="@+id/listview_button"
-        android:layout_gravity="center_horizontal" />
+<Button
+    android:id="@+id/logout_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/logout"
+    android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
 
-    <LinearLayout
-        android:id="@+id/LinearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
 
-    <EditText android:id="@+id/search_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/start_search" />
-    <Button
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_search" />
-    <Button
-        android:id="@+id/button_search_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_search_reset" />
-    </LinearLayout>
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment" />
