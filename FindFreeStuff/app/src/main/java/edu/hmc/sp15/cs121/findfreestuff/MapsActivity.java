@@ -1,18 +1,15 @@
 package edu.hmc.sp15.cs121.findfreestuff;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.location.Location;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -22,15 +19,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-
 import com.parse.FindCallback;
-import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +77,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 startActivity(intent);
             }
         });
+
+        // Set up the handler for the list button click
+        Button listButton = (Button) findViewById(R.id.list_button);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MapsActivity.this, ListActivity.class);
+                startActivity(intent2);
+            }
+        });
+
+
 
         displayFreeStuff();
     }

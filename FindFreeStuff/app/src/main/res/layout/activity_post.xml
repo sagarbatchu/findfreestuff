@@ -32,6 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post!"
-        android:id="@+id/post_button"
+        android:id="@+id/post_PostButton"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
