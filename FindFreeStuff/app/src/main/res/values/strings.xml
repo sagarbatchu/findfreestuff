@@ -7,6 +7,7 @@
     <string name="post">Post New Item</string>
     <string name="activity_post_title">Create a New Free Item</string>
     <string name="title_item_activity">Free Item Information</string>
+    <string name = "title_activity_preferences">User Preferences</string>
     <string name="login">Log in</string>
     <string name="logout_full">Log out of Find Free Stuff</string>
     <string name="logout">Log out</string>

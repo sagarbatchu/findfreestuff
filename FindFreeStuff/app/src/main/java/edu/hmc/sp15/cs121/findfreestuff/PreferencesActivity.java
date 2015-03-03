@@ -1,6 +1,7 @@
 package edu.hmc.sp15.cs121.findfreestuff;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.parse.ParseUser;
 
 /**
@@ -22,26 +25,28 @@ public class PreferencesActivity extends Activity {
     private EditText newDistance;
     private TextView usernameText;
     private TextView distanceText;
+    private final String maxDistance = "maxDistance";
+    private Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        context = getApplicationContext();
         myItems = (ListView) findViewById(R.id.preferences_ListOfItems);
         newDistance = (EditText) findViewById(R.id.preferences_ItemDistanceField);
         usernameText = (TextView) findViewById(R.id.preferences_Username);
         distanceText = (TextView) findViewById(R.id.preferences_ItemDistance);
 
-        //get ParseUser object somehow
-        //user.get("maxDistance");
-        //also user.getUsername();
-        //until then use hard-coded values
-        //Intent intent = getIntent(); possibly through an Intent?
-        CharSequence username = "User";
-        double maxDistanceNum = 5;
-        CharSequence maxDistance = "" +  maxDistanceNum;
-        distanceText.setText(maxDistance);
-        usernameText.setText(username);
+        //get current user
+        user = ParseUser.getCurrentUser();
+        if (user.get(maxDistance) == null) {
+            user.put(maxDistance, "5");
+        }
+
+        CharSequence maxDistanceText = "" +  user.get(maxDistance);
+        distanceText.setText(maxDistanceText);
+        usernameText.setText(user.getUsername());
 
         //do a query to get all FreeItems that have this ParseUser
         //put them into the ListView
@@ -59,9 +64,19 @@ public class PreferencesActivity extends Activity {
 
     private void updateDistance () {
         String distance = newDistance.getText().toString();
-        //convert to double
-        //user.setMaxDistance(distance)
-        distanceText.setText(distance);
+        Double distanceNum;
+        try {
+           distanceNum = Double.parseDouble(distance);
+           distanceText.setText(distance);
+           user.put(maxDistance, distanceNum);
+
+        }
+        catch (NumberFormatException e){
+            CharSequence error = "Please enter a decimal number";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, error, duration);
+            toast.show();
+        }
     }
 
 
