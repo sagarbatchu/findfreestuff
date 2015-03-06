@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
@@ -9,12 +9,12 @@
         android:text="Free Item:"
         android:id="@+id/item_TitleLabel" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Title"
-        android:id="@+id/item_Title" />
+        android:id="@+id/item_TitleText"
+        android:hint="Title"
+        android:textColorHint="#000000" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,16 +22,24 @@
         android:text="Details:"
         android:id="@+id/item_DetailsLabel" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Details"
-        android:id="@+id/item_Details" />
+        android:id="@+id/item_DetailsText"
+        android:textColorHint="#000000"
+        android:hint="Details" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Claim Item"
         android:id="@+id/item_ClaimButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Item"
+        android:id="@+id/item_DeleteButton"
+        android:layout_gravity="right"
+        android:visibility="invisible" />
 </LinearLayout>

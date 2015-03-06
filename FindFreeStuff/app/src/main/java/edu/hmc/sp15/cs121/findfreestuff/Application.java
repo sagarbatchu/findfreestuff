@@ -8,6 +8,9 @@ import com.parse.ParseObject;
 public class Application extends android.app.Application {
 
     public static final String INTENT_EXTRA_LOCATION = "location";
+    public static final String INTENT_EXTRA_ID = "id";
+
+
 
     public Application() {
     }

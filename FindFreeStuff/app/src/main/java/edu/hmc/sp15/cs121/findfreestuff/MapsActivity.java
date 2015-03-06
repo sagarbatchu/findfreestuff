@@ -197,7 +197,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
                     Intent intent = new Intent(MapsActivity.this, ItemActivity.class);
                     intent.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
-                    intent.putExtra("itemID", freeItem.getObjectId());
+                    intent.putExtra(Application.INTENT_EXTRA_ID, freeItem.getObjectId());
                     startActivity(intent);
 
                     return;
