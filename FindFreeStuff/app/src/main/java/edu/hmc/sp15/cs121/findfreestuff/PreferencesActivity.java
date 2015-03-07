@@ -3,16 +3,27 @@ package edu.hmc.sp15.cs121.findfreestuff;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 /**
  * Created by reidcallan on 2/24/15.
@@ -27,10 +38,17 @@ public class PreferencesActivity extends Activity {
     private TextView distanceText;
     private final String maxDistance = "maxDistance";
     private Context context;
+    private ListQueryAdapter adapter;
+    private Location location;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
+
+        Intent intent = getIntent();
+
+        location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
 
         context = getApplicationContext();
         myItems = (ListView) findViewById(R.id.preferences_ListOfItems);
@@ -44,14 +62,23 @@ public class PreferencesActivity extends Activity {
             user.put(maxDistance, "5");
         }
 
+        //fill list view with user created items
+        adapter = new ListQueryAdapter(context);
+        adapter.setTextKey("title");
+        myItems.setAdapter(adapter);
+        adapter.loadObjects();
+
+        myItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToItem(position);
+                adapter.loadObjects();
+            }
+        });
+
         CharSequence maxDistanceText = "" +  user.get(maxDistance);
         distanceText.setText(maxDistanceText);
         usernameText.setText(user.getUsername());
-
-        //do a query to get all FreeItems that have this ParseUser
-        //put them into the ListView
-        //take functionality from ListActivity, modify query to
-        //depend on user, not distance
 
         updateDistanceButton = (Button) findViewById(R.id.preferences_setDistanceButton);
         updateDistanceButton.setEnabled(true);
@@ -78,6 +105,28 @@ public class PreferencesActivity extends Activity {
             toast.show();
         }
     }
+
+    private void goToItem (int position) {
+        if (adapter.getItem(position) != null) {
+            FreeItem item = (FreeItem) adapter.getItem(position);
+            Intent intent = new Intent(PreferencesActivity.this, ItemActivity.class);
+            intent.putExtra(Application.INTENT_EXTRA_LOCATION, location);
+            intent.putExtra(Application.INTENT_EXTRA_ID, item.getObjectId());
+            startActivityForResult(intent, 0);
+        }
+        else {
+            adapter.loadObjects();
+        }
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode < 0) {
+            adapter.loadObjects();
+        }
+    }
+
+
+
 
 
 }

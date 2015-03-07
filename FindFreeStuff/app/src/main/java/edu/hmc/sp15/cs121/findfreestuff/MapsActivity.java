@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             public void onClick(View v) {
                 // Start an intent for the preferences activity
                 Intent intent = new Intent(MapsActivity.this, PreferencesActivity.class);
+                intent.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
                 startActivity(intent);
             }
         });
