@@ -162,6 +162,7 @@ public class ItemActivity extends Activity {
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(context, congrats, duration);
                         toast.show();
+                        setResult(0);
                         finish();
                     }
                     //otherwise you have to get closer
@@ -228,6 +229,7 @@ public class ItemActivity extends Activity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     editUpdateButton.setEnabled(false);
+                    setResult(-1);
                     finish();
                 }
                 else {
