@@ -188,10 +188,10 @@ public class ItemActivity extends Activity {
                 public void done(ParseObject object, ParseException e) {
                     if (e == null) {
                         item = (FreeItem) object;
-                        if (!titleText.getText().equals("")) {
+                        if (titleText.getText().toString().trim().length() > 0) {
                             item.setPostTitle(titleText.getText().toString());
                         }
-                        if (!detailsText.getText().equals("")) {
+                        if (detailsText.getText().toString().trim().length() > 0) {
                             item.setPostDetails(detailsText.getText().toString());
                         }
                         titleText.setEnabled(false);
