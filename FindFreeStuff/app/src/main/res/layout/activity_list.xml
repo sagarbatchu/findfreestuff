@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+     <TextView
+         android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:text="List of Free Items"
+        android:textSize="20sp"
+        android:id="@+id/list_item"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+     <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/list_item" />
+
+
+</RelativeLayout>

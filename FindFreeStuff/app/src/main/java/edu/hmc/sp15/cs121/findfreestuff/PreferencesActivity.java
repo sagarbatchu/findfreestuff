@@ -87,6 +87,19 @@ public class PreferencesActivity extends Activity {
                 updateDistance();
             }
         });
+
+        // Set up the handler for the logout button click
+        Button logoutButton = (Button) findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Call the Parse log out method
+                ParseUser.logOut();
+                // Start an intent for the dispatch activity
+                Intent intent = new Intent(PreferencesActivity.this, DispatchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateDistance () {

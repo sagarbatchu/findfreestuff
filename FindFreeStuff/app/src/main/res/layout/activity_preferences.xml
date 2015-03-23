@@ -43,6 +43,12 @@
         android:text="Update Distance"
         android:id="@+id/preferences_setDistanceButton" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:id="@+id/logout_button" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

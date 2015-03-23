@@ -77,6 +77,11 @@
             android:label="@string/title_activity_preferences"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ListActivity"
+            android:label="See a List of Free Items"
+            android:windowSoftInputMode="adjustResize" />
+
 
     </application>
 

@@ -95,18 +95,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             }
         });
 
-        // Set up the handler for the logout button click
-        Button logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Call the Parse log out method
-                ParseUser.logOut();
-                // Start an intent for the dispatch activity
-                Intent intent = new Intent(MapsActivity.this, DispatchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+
 
         //Set up the handler for the Preferences button click
         Button preferencesButton = (Button) findViewById(R.id.preferences_button);
@@ -118,6 +107,16 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 startActivity(intent);
             }
         });
+
+        // Set up the handler for the list button click
+        Button listButton = (Button) findViewById(R.id.listview_button);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MapsActivity.this, ListActivity.class);
+                intent2.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
+                startActivity(intent2);
+                }
+            });
         displayFreeStuff();
     }
 
