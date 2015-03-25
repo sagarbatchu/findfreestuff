@@ -220,6 +220,15 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      */
     private void displayFreeStuff() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+
+        // If there is a valid currentLocation, make the query based on the location of the user and
+        // the user's maxDistance. Otherwise, get all of the Free Items.
+        if (currentLocation != null) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+            query.whereWithinMiles("location", currentLocationGeoPoint, currentUser.getDouble("maxDistance"));
+        }
+
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
                 if (e == null) {
