@@ -59,7 +59,7 @@ public class PreferencesActivity extends Activity {
         //get current user
         user = ParseUser.getCurrentUser();
         if (user.get(maxDistance) == null) {
-            user.put(maxDistance, "5");
+            user.put(maxDistance, 5.0);
         }
 
         //fill list view with user created items
@@ -109,7 +109,7 @@ public class PreferencesActivity extends Activity {
            distanceNum = Double.parseDouble(distance);
            distanceText.setText(distance);
            user.put(maxDistance, distanceNum);
-
+           user.saveInBackground();
         }
         catch (NumberFormatException e){
             CharSequence error = "Please enter a decimal number";
