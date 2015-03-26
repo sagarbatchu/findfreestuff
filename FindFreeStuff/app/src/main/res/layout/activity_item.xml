@@ -29,6 +29,19 @@
         android:textColorHint="#000000"
         android:hint="Details" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags:"
+        android:id="@+id/item_TagsLabel" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_TagsText"
+        android:textColorHint="#000000"
+        android:hint="Tags" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

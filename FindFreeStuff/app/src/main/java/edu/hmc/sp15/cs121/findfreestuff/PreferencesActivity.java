@@ -60,6 +60,8 @@ public class PreferencesActivity extends Activity {
         user = ParseUser.getCurrentUser();
         if (user.get(maxDistance) == null) {
             user.put(maxDistance, 5.0);
+
+            user.saveInBackground();
         }
 
         //fill list view with user created items
