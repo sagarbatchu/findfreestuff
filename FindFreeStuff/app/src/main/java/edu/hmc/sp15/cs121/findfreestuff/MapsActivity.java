@@ -98,8 +98,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             }
         });
 
-
-
         //Set up the handler for the Preferences button click
         Button preferencesButton = (Button) findViewById(R.id.preferences_button);
         preferencesButton.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +119,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 }
             });
 
-        searchValue = (EditText) findViewById(R.id.search_value);
-        isSearching = false;
-
+        // Set up the handler for the search button click
         Button searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -132,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 }
             });
 
+        // Set up the handler for the search reset button click
         Button searchResetButton = (Button) findViewById(R.id.button_search_reset);
         searchResetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -139,6 +136,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 displayFreeStuff();
             }
         });
+
+        // Setup the search bar and the internal searching state
+        searchValue = (EditText) findViewById(R.id.search_value);
+        isSearching = false;
 
         displayFreeStuff();
     }
@@ -188,17 +189,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     }
 
     /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Claremont, and move the camera to that marker.
+     * Setup for the map. Moves the initial view to the current location if it exists, and
+     * Claremont otherwise. Calls the proper function for displaying the correct Free Items.
      * <p/>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
         LatLng claremont = new LatLng(34.1067409,-117.7072027);
 
-        // Move initial view to Claremont, as emulator doesn't like initializing with GPS location
+        // Move initial view to Claremont if there is no current location
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
+
+        if (currentLocation == null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
+        } else {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 13));
+        }
 
         // Set zoom controls enabled, really helps with emulator
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -318,7 +324,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     }
 
     /*
-     *
+     * Retrieves Free Items from the Parse Core backend based on user search parameters
+     * and displays them on the map as Markers.
      */
     private void displaySearchedStuff() {
         // Make parse query with the searchValue
@@ -332,27 +339,19 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             searchQuery.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
         }
 
+        // Get the search value from the search box and create an array from the comma-separated values
         String searchString = searchValue.getText().toString().trim();
         ArrayList<String> tagList = new ArrayList<String>(Arrays.asList(searchString.split(",")));
-
-        //for (String tag : tagList) {
-            //System.out.println("#### tag is: " + tag);
-            //searchQuery.whereContains("tags", searchString);
-            //searchQuery.whereContainsAll("tags", tagList);
+        // Have query return only items that have all of the search values in their "tags" data member
         searchQuery.whereContainsAll(Application.STRING_TAGS, Arrays.asList(searchString.split(",")));
-        //}
 
-        System.out.println("#### tags to search are: " + searchString);
         searchQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
-
                 if (e == null) {
-
+                    // Create a HashSet of the markers to put on the map
                     Set<String> toKeep = new HashSet<String>();
 
-
                     for (int i = 0; i < freeStuffList.size(); ++i ) {
-
                         ParseObject freeItem = freeStuffList.get(i);
                         String freeItemID = freeItem.getObjectId();
                         ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
@@ -382,9 +381,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             }
         });
     }
-
-
-
 
 
     ///////////////////// Google Play Location Services Functions //////////////////////////////////
