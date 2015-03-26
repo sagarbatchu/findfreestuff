@@ -62,8 +62,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     private EditText searchValue;
     private boolean isSearching;
 
-    private String freeItemParseName = "FreeItem";
-
     ///////////////////////////// Activity Lifetime Functions /////////////////////////////////////
 
     @Override
@@ -222,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         final String freeItemID = markerIDs.get(marker.getId());
         // Create and make a Parse Query for a free item with
         // the ID associated with this marker
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
         query.getInBackground(freeItemID, new GetCallback<ParseObject>() {
             public void done(ParseObject freeItem, ParseException e) {
                 // If the free item actually exists, display its details
@@ -253,14 +251,14 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      * as Markers.
      */
     private void displayFreeStuff() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
 
         // If there is a valid currentLocation, make the query based on the location of the user and
         // the user's maxDistance. Otherwise, get all of the Free Items.
         if (currentLocation != null) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-            query.whereWithinMiles("location", currentLocationGeoPoint, currentUser.getDouble("maxDistance"));
+            query.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
         }
 
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -276,7 +274,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                         // and try to extract its location/ID
                         ParseObject freeItem = freeStuffList.get(i);
                         String freeItemID = freeItem.getObjectId();
-                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
+                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
                         // Add the marker to the to list of markers to keep on the map
                         toKeep.add(freeItemID);
                         // Try to grab existing marker for this free item
@@ -287,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                             if (freeItemLocation != null) {
                                 // Put a marker on the map with the proper information
                                 LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
-                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString("title")));
+                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString(Application.STRING_TITLE)));
                                 // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
                                 mapMarkers.put(freeItemID, newMarker);
                                 // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
@@ -324,14 +322,14 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      */
     private void displaySearchedStuff() {
         // Make parse query with the searchValue
-        ParseQuery<ParseObject> searchQuery = ParseQuery.getQuery(freeItemParseName);
+        ParseQuery<ParseObject> searchQuery = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
 
         // If there is a valid currentLocation, make the query based on the location of the user and
         // the user's maxDistance. Otherwise, get all of the Free Items.
         if (currentLocation != null) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-            searchQuery.whereWithinMiles("location", currentLocationGeoPoint, currentUser.getDouble("maxDistance"));
+            searchQuery.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
         }
 
         String searchString = searchValue.getText().toString().trim();
@@ -341,7 +339,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             //System.out.println("#### tag is: " + tag);
             //searchQuery.whereContains("tags", searchString);
             //searchQuery.whereContainsAll("tags", tagList);
-        searchQuery.whereContainsAll("tags", Arrays.asList(searchString.split(",")));
+        searchQuery.whereContainsAll(Application.STRING_TAGS, Arrays.asList(searchString.split(",")));
         //}
 
         System.out.println("#### tags to search are: " + searchString);
@@ -357,7 +355,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
                         ParseObject freeItem = freeStuffList.get(i);
                         String freeItemID = freeItem.getObjectId();
-                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
+                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
                         // Add the marker to the to list of markers to keep on the map
                         toKeep.add(freeItemID);
                         // Try to grab existing marker for this free item
@@ -368,7 +366,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                             if (freeItemLocation != null) {
                                 // Put a marker on the map with the proper information
                                 LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
-                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString("title")));
+                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString(Application.STRING_TITLE)));
                                 // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
                                 mapMarkers.put(freeItemID, newMarker);
                                 // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID

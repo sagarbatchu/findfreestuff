@@ -55,7 +55,7 @@ public class ItemActivity extends Activity {
         }
 
         //find the requested item
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeItem");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
         query.getInBackground(id, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -154,7 +154,7 @@ public class ItemActivity extends Activity {
 
     private void claim () {
         //find the item we want to claim
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeItem");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
         query.getInBackground(id, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -190,7 +190,7 @@ public class ItemActivity extends Activity {
 
     private void editUpdate () {
         if (editUpdateButton.getText().toString().equals(update)) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeItem");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
             query.getInBackground(id, new GetCallback<ParseObject>() {
                 public void done(ParseObject object, ParseException e) {
                     if (e == null) {
@@ -234,7 +234,7 @@ public class ItemActivity extends Activity {
     }
 
     private void delete () {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FreeItem");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
         query.getInBackground(id, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {

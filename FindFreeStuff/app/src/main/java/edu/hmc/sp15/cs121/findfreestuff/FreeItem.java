@@ -15,50 +15,50 @@ import java.util.List;
 /**
  * Data model for a free thing.
  */
-@ParseClassName("FreeItem")
+@ParseClassName(Application.FREE_ITEM_CLASS)
 public class FreeItem extends ParseObject {
     public String getPostTitle() {
-        return getString("title");
+        return getString(Application.STRING_TITLE);
     }
     public void setPostTitle(String value) {
-        put("title", value);
+        put(Application.STRING_TITLE, value);
     }
     public String getPostDetails() {
-        return getString("details");
+        return getString(Application.STRING_DETAILS);
     }
     public void setPostDetails(String value) {
-        put("details", value);
+        put(Application.STRING_DETAILS, value);
     }
     public ParseUser getUser() {
-        return getParseUser("user");
+        return getParseUser(Application.STRING_USER);
     }
     public void setUser(ParseUser value) {
-        put("user", value);
+        put(Application.STRING_USER, value);
     }
     public ParseGeoPoint getLocation() {
-        return getParseGeoPoint("location");
+        return getParseGeoPoint(Application.STRING_LOCATION);
     }
     public void setLocation(ParseGeoPoint value) {
-        put("location", value);
+        put(Application.STRING_LOCATION, value);
     }
     // Note: we store "tags" as a comma-separated string of tags, so we can easily query
     // based on tags and also not have to do JSON serialization
     public void setTags(String[] tags) {
         for (String tag : tags) {
-            add("tags", tag);
+            add(Application.STRING_TAGS, tag);
         }
         saveInBackground();
     }
     public void addTags(String tags) {
-        String oldTags = getString("tags");
+        String oldTags = getString(Application.STRING_TAGS);
         oldTags = (oldTags == null) ? "" : oldTags;
 
         String newTags = new StringBuilder().append(oldTags).append(tags).toString();
 
-        put("tags", newTags);
+        put(Application.STRING_TAGS, newTags);
     }
     public List getTags() {
-        return getList("tags");
+        return getList(Application.STRING_TAGS);
     }
     public static ParseQuery<FreeItem> getQuery() {
         return ParseQuery.getQuery(FreeItem.class);

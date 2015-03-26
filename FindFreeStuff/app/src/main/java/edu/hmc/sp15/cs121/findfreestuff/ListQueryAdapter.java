@@ -17,8 +17,8 @@ public class ListQueryAdapter extends ParseQueryAdapter {
         // Items posted by the user
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery create() {
-                ParseQuery query = new ParseQuery("FreeItem");
-                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                ParseQuery query = new ParseQuery(Application.FREE_ITEM_CLASS);
+                query.whereEqualTo(Application.STRING_USER, ParseUser.getCurrentUser());
                 return query;
             }
         });

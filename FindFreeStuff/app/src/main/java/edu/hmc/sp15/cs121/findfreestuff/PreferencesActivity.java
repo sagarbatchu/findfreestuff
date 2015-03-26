@@ -36,7 +36,6 @@ public class PreferencesActivity extends Activity {
     private EditText newDistance;
     private TextView usernameText;
     private TextView distanceText;
-    private final String maxDistance = "maxDistance";
     private Context context;
     private ListQueryAdapter adapter;
     private Location location;
@@ -58,15 +57,15 @@ public class PreferencesActivity extends Activity {
 
         //get current user
         user = ParseUser.getCurrentUser();
-        if (user.get(maxDistance) == null) {
-            user.put(maxDistance, 5.0);
+        if (user.get(Application.STRING_MAXDISTANCE) == null) {
+            user.put(Application.STRING_MAXDISTANCE, 5.0);
 
             user.saveInBackground();
         }
 
         //fill list view with user created items
         adapter = new ListQueryAdapter(context);
-        adapter.setTextKey("title");
+        adapter.setTextKey(Application.STRING_TITLE);
         myItems.setAdapter(adapter);
         adapter.loadObjects();
 
@@ -78,7 +77,7 @@ public class PreferencesActivity extends Activity {
             }
         });
 
-        CharSequence maxDistanceText = "" +  user.get(maxDistance);
+        CharSequence maxDistanceText = "" +  user.get(Application.STRING_MAXDISTANCE);
         distanceText.setText(maxDistanceText);
         usernameText.setText(user.getUsername());
 
@@ -110,7 +109,7 @@ public class PreferencesActivity extends Activity {
         try {
            distanceNum = Double.parseDouble(distance);
            distanceText.setText(distance);
-           user.put(maxDistance, distanceNum);
+           user.put(Application.STRING_MAXDISTANCE, distanceNum);
            user.saveInBackground();
         }
         catch (NumberFormatException e){

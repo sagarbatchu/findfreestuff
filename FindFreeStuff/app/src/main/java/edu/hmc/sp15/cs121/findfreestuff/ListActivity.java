@@ -21,8 +21,8 @@ public class ListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 //Intent intent2 = getIntent();
-        titleAdapter = new ParseQueryAdapter<ParseObject>(this, "FreeItem");
-        titleAdapter.setTextKey("title");
+        titleAdapter = new ParseQueryAdapter<ParseObject>(this, Application.FREE_ITEM_CLASS);
+        titleAdapter.setTextKey(Application.STRING_TITLE);
 // Initialize ListView and set initial view to titleAdapter
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(titleAdapter);
