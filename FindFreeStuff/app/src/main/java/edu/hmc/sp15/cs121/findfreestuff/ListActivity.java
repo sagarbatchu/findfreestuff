@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
+
 /**
  * Created by Woky on 3/1/15.
  */
@@ -20,10 +24,18 @@ public class ListActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-//Intent intent2 = getIntent();
-        titleAdapter = new ParseQueryAdapter<ParseObject>(this, Application.FREE_ITEM_CLASS);
+
+        Intent intent = getIntent();
+        location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
+        ParseGeoPoint locationPoint = null;
+        if (location != null) {
+            locationPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        }
+
+        titleAdapter = new ListQueryAdapter(getApplicationContext(), Application.STRING_MAXDISTANCE, locationPoint, ParseUser.getCurrentUser().getDouble(Application.STRING_MAXDISTANCE));
         titleAdapter.setTextKey(Application.STRING_TITLE);
-// Initialize ListView and set initial view to titleAdapter
+
+        // Initialize ListView and set initial view to titleAdapter
         listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(titleAdapter);
         titleAdapter.loadObjects();
@@ -36,9 +48,7 @@ public class ListActivity extends Activity {
             }
         });
 
-        Intent intent = getIntent();
 
-        location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
     }
 
     private void goToItem (int position) {

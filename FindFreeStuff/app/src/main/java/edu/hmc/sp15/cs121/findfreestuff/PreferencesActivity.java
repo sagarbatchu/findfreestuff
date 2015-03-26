@@ -45,11 +45,14 @@ public class PreferencesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        //Get the Intent and the current location
         Intent intent = getIntent();
-
         location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
 
+        //get the context
         context = getApplicationContext();
+
+        //Find UI components
         myItems = (ListView) findViewById(R.id.preferences_ListOfItems);
         newDistance = (EditText) findViewById(R.id.preferences_ItemDistanceField);
         usernameText = (TextView) findViewById(R.id.preferences_Username);
@@ -59,12 +62,11 @@ public class PreferencesActivity extends Activity {
         user = ParseUser.getCurrentUser();
         if (user.get(Application.STRING_MAXDISTANCE) == null) {
             user.put(Application.STRING_MAXDISTANCE, 5.0);
-
             user.saveInBackground();
         }
 
         //fill list view with user created items
-        adapter = new ListQueryAdapter(context);
+        adapter = new ListQueryAdapter(context, Application.STRING_USER, null, null);
         adapter.setTextKey(Application.STRING_TITLE);
         myItems.setAdapter(adapter);
         adapter.loadObjects();

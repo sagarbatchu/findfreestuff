@@ -162,7 +162,7 @@ public class ItemActivity extends Activity {
 
 
                     //if we are close enough delete the item from parse
-                    if (geopoint.distanceInKilometersTo(item.getLocation()) < .25) {
+                    if (geopoint.distanceInMilesTo(item.getLocation()) < .25) {
                         //delete item from parse
                         item.deleteInBackground();
                         CharSequence congrats = "You have successfully claimed the free item: " + item.getPostTitle();
