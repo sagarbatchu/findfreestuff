@@ -8,6 +8,10 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Data model for a free thing.
  */
@@ -36,6 +40,25 @@ public class FreeItem extends ParseObject {
     }
     public void setLocation(ParseGeoPoint value) {
         put("location", value);
+    }
+    // Note: we store "tags" as a comma-separated string of tags, so we can easily query
+    // based on tags and also not have to do JSON serialization
+    public void setTags(String[] tags) {
+        for (String tag : tags) {
+            add("tags", tag);
+        }
+        saveInBackground();
+    }
+    public void addTags(String tags) {
+        String oldTags = getString("tags");
+        oldTags = (oldTags == null) ? "" : oldTags;
+
+        String newTags = new StringBuilder().append(oldTags).append(tags).toString();
+
+        put("tags", newTags);
+    }
+    public List getTags() {
+        return getList("tags");
     }
     public static ParseQuery<FreeItem> getQuery() {
         return ParseQuery.getQuery(FreeItem.class);

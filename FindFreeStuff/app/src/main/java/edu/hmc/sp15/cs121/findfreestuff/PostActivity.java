@@ -24,11 +24,15 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class PostActivity extends Activity {
     // UI references.
     private EditText postEditTextTitle;
     private EditText postEditTextDetails;
+    private EditText postEditTextTags;
     private Button postButton;
     private ParseGeoPoint geoPoint;
     private Context context;
@@ -43,6 +47,7 @@ public class PostActivity extends Activity {
         geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         postEditTextTitle = (EditText) findViewById(R.id.post_editTextTitle);
         postEditTextDetails = (EditText) findViewById(R.id.post_editTextDetails);
+        postEditTextTags = (EditText) findViewById(R.id.post_editTextTags);
         postButton = (Button) findViewById(R.id.post_PostButton);
         postButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -57,6 +62,7 @@ public class PostActivity extends Activity {
     private void post () {
         String text = postEditTextDetails.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
+        String[] tags = postEditTextTags.getText().toString().trim().split(",");
 
         if(text.length() == 0 || title.length() == 0) {
             CharSequence alert = "Please enter a title and post details";
@@ -76,6 +82,7 @@ public class PostActivity extends Activity {
             post.setLocation(geoPoint);
             post.setPostDetails(text);
             post.setPostTitle(title);
+            post.setTags(tags);
             post.setUser(ParseUser.getCurrentUser());
             ParseACL acl = new ParseACL();
 

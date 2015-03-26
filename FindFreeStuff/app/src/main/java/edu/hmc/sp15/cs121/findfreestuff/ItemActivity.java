@@ -30,6 +30,7 @@ public class ItemActivity extends Activity {
     private Button deleteButton;
     private EditText titleText;
     private EditText detailsText;
+    private EditText tagsText;
     private ParseGeoPoint geopoint;
     private FreeItem item;
     Context context;
@@ -66,8 +67,10 @@ public class ItemActivity extends Activity {
                     //set up the title and details views
                     titleText = (EditText) findViewById(R.id.item_TitleText);
                     detailsText = (EditText) findViewById(R.id.item_DetailsText);
+                    tagsText = (EditText) findViewById(R.id.item_TagsText);
                     titleText.setEnabled(false);
                     detailsText.setEnabled(false);
+                    tagsText.setEnabled(false);
 
                     //set up button
                     claimButton = (Button) findViewById(R.id.item_ClaimButton);
@@ -79,6 +82,10 @@ public class ItemActivity extends Activity {
 
                         titleText.setHint(item.getPostTitle());
                         detailsText.setHint(item.getPostDetails());
+                        if (item.getTags() != null) {
+                            String tagsList = item.getTags().toString();
+                            tagsText.setHint(tagsList.substring(1, tagsList.length() - 1));
+                        }
 
                         //get the item's user
                         ParseUser itemUser = null;
@@ -194,8 +201,12 @@ public class ItemActivity extends Activity {
                         if (detailsText.getText().toString().trim().length() > 0) {
                             item.setPostDetails(detailsText.getText().toString());
                         }
+                        if (tagsText.getText().toString().trim().length() > 0) {
+                            item.setTags(tagsText.getText().toString().split(","));
+                        }
                         titleText.setEnabled(false);
                         detailsText.setEnabled(false);
+                        tagsText.setEnabled(false);
                         editUpdateButton.setText(edit);
 
                         //let user know the post updated
@@ -213,6 +224,7 @@ public class ItemActivity extends Activity {
         else {
             titleText.setEnabled(true);
             detailsText.setEnabled(true);
+            tagsText.setEnabled(true);
             claimButton.setText(update);
             CharSequence msg = "You may now edit this post";
             int duration = Toast.LENGTH_LONG;
