@@ -43,10 +43,8 @@ public class FreeItem extends ParseObject {
     }
     // Note: we store "tags" as a comma-separated string of tags, so we can easily query
     // based on tags and also not have to do JSON serialization
-    public void setTags(String[] tags) {
-        for (String tag : tags) {
-            add(Application.STRING_TAGS, tag);
-        }
+    public void setTags(String tags) {
+        put(Application.STRING_TAGS, tags);
         saveInBackground();
     }
     public void addTags(String tags) {
@@ -57,8 +55,8 @@ public class FreeItem extends ParseObject {
 
         put(Application.STRING_TAGS, newTags);
     }
-    public List getTags() {
-        return getList(Application.STRING_TAGS);
+    public String getTags() {
+        return getString(Application.STRING_TAGS);
     }
     public static ParseQuery<FreeItem> getQuery() {
         return ParseQuery.getQuery(FreeItem.class);

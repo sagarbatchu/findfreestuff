@@ -62,7 +62,7 @@ public class PostActivity extends Activity {
     private void post () {
         String text = postEditTextDetails.getText().toString().trim();
         String title = postEditTextTitle.getText().toString().trim();
-        String[] tags = postEditTextTags.getText().toString().trim().split(",");
+        String tags = postEditTextTags.getText().toString().trim();
 
         if(text.length() == 0 || title.length() == 0) {
             CharSequence alert = "Please enter a title and post details";
