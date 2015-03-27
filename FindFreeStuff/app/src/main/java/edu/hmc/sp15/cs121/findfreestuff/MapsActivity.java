@@ -38,6 +38,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -123,8 +124,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         Button searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                isSearching = true;
-                displaySearchedStuff();
+                    if (searchValue.getText().toString().trim().length() > 0) {
+                        isSearching = true;
+                        displaySearchedStuff();
+                    }
                 }
             });
 
@@ -315,8 +318,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         for (String objId : new HashSet<String>(mapMarkers.keySet())) {
             if (!markersToKeep.contains(objId)) {
                 Marker marker = mapMarkers.get(objId);
+
                 markerIDs.remove(marker.getId());
                 marker.remove();
+
                 mapMarkers.get(objId).remove();
                 mapMarkers.remove(objId);
             }
@@ -329,21 +334,52 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      */
     private void displaySearchedStuff() {
         // Make parse query with the searchValue
-        ParseQuery<ParseObject> searchQuery = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+        //ParseQuery<ParseObject> tagsQuery = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+        List<ParseQuery<ParseObject>> queriesList = new ArrayList<ParseQuery<ParseObject>>();
+
+        // Get the search value from the search box and create an array from the comma-separated values
+        String searchString = searchValue.getText().toString().trim();
+        // Have query return only items that have all of the search values in their "tags" data member
+        Collection<String> searchValues = Arrays.asList(searchString.split(","));
+
+        // Make the Logical or (using ParseQuery.or()) of queries for each of the search terms in
+        // the "title" of each Free Item
+        // NOTE: using ParseQuery.or greatly limits the number of search terms we can enter. At
+        // the moment as we are converting the title values to search for both initial capitalized
+        // and totally uncapitalized, we can do at max 3 terms per search.
+        // So, it seems that using ParseQuery.or we can do at max 9 search terms. Not ideal, but
+        // not too bad.
+        for (String value : searchValues) {
+            value = value.toLowerCase();
+
+            // Fully lower-case
+            ParseQuery<ParseObject> titleQueryLower = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            ParseQuery<ParseObject> tagsQueryLower = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            titleQueryLower.whereContains(Application.STRING_TITLE, value);
+            tagsQueryLower.whereContains(Application.STRING_TAGS, value);
+
+            // With first letter capitalized (for titles)
+            ParseQuery<ParseObject> titleQueryUpper = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            titleQueryUpper.whereContains(Application.STRING_TITLE, (value.substring(0,1).toUpperCase() + value.substring(1)));
+
+            queriesList.add(titleQueryLower);
+            queriesList.add(titleQueryUpper);
+            queriesList.add(tagsQueryLower);
+        }
 
         // If there is a valid currentLocation, make the query based on the location of the user and
         // the user's maxDistance. Otherwise, get all of the Free Items.
         if (currentLocation != null) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-            searchQuery.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
+
+            for (ParseQuery query : queriesList) {
+                query.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
+            }
+
         }
 
-        // Get the search value from the search box and create an array from the comma-separated values
-        String searchString = searchValue.getText().toString().trim();
-        ArrayList<String> tagList = new ArrayList<String>(Arrays.asList(searchString.split(",")));
-        // Have query return only items that have all of the search values in their "tags" data member
-        searchQuery.whereContainsAll(Application.STRING_TAGS, Arrays.asList(searchString.split(",")));
+        ParseQuery<ParseObject> searchQuery = ParseQuery.or(queriesList);
 
         searchQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
@@ -380,6 +416,42 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 }
             }
         });
+
+//        namesQuery.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> freeStuffList, ParseException e) {
+//                if (e == null) {
+//                    // Create a HashSet of the markers to put on the map
+//                    Set<String> toKeep = new HashSet<String>();
+//
+//                    for (int i = 0; i < freeStuffList.size(); ++i ) {
+//                        ParseObject freeItem = freeStuffList.get(i);
+//                        String freeItemID = freeItem.getObjectId();
+//                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
+//                        // Add the marker to the to list of markers to keep on the map
+//                        toKeep.add(freeItemID);
+//                        // Try to grab existing marker for this free item
+//                        Marker freeItemMarker = mapMarkers.get(freeItemID);
+//                        // If the marker does not already exist
+//                        if (freeItemMarker == null) {
+//                            // If the location value of the Parse Object exists
+//                            if (freeItemLocation != null) {
+//                                // Put a marker on the map with the proper information
+//                                LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
+//                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString(Application.STRING_TITLE)));
+//                                // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
+//                                mapMarkers.put(freeItemID, newMarker);
+//                                // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
+//                                markerIDs.put(newMarker.getId(), freeItemID);
+//                            }
+//                        }
+//                    }
+//                    // Clean up all of the markers that are not in toKeep
+//                    cleanUpMarkers(toKeep);
+//                } else {
+//                    Log.d("Logging Message", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
     }
 
 
@@ -435,7 +507,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
     @Override
     public void onConnectionSuspended(int i) {
-        /// Log.i(TAG, "GoogleApiClient connection has been suspend");
+        //Log.i(TAG, "GoogleApiClient connection has been suspend");
     }
 
     @Override

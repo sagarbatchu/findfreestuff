@@ -83,8 +83,8 @@ public class ItemActivity extends Activity {
                         titleText.setHint(item.getPostTitle());
                         detailsText.setHint(item.getPostDetails());
                         if (item.getTags() != null) {
-                            String tagsList = item.getTags().toString();
-                            tagsText.setHint(tagsList.substring(1, tagsList.length() - 1));
+                            String tagsList = item.getTags();
+                            tagsText.setHint(tagsList);
                         }
 
                         //get the item's user
@@ -202,7 +202,7 @@ public class ItemActivity extends Activity {
                             item.setPostDetails(detailsText.getText().toString());
                         }
                         if (tagsText.getText().toString().trim().length() > 0) {
-                            item.setTags(tagsText.getText().toString().split(","));
+                            item.setTags(tagsText.getText().toString());
                         }
                         titleText.setEnabled(false);
                         detailsText.setEnabled(false);
