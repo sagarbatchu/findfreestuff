@@ -30,12 +30,17 @@ import java.util.List;
  */
 public class PreferencesActivity extends Activity {
 
+    //user reference
     private ParseUser user;
+
+    //UI references
     private Button updateDistanceButton;
     private ListView myItems;
     private EditText newDistance;
     private TextView usernameText;
     private TextView distanceText;
+
+    //Data references
     private Context context;
     private ListQueryAdapter adapter;
     private Location location;
@@ -79,10 +84,10 @@ public class PreferencesActivity extends Activity {
             }
         });
 
+        //set up distance UI
         CharSequence maxDistanceText = "" +  user.get(Application.STRING_MAXDISTANCE);
         distanceText.setText(maxDistanceText);
         usernameText.setText(user.getUsername());
-
         updateDistanceButton = (Button) findViewById(R.id.preferences_setDistanceButton);
         updateDistanceButton.setEnabled(true);
         updateDistanceButton.setOnClickListener(new View.OnClickListener() {

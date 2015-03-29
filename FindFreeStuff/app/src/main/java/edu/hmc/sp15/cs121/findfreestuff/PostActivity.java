@@ -34,6 +34,7 @@ public class PostActivity extends Activity {
     private EditText postEditTextDetails;
     private EditText postEditTextTags;
     private Button postButton;
+    //data objects
     private ParseGeoPoint geoPoint;
     private Context context;
 
@@ -44,7 +45,10 @@ public class PostActivity extends Activity {
         Intent intent = getIntent();
         Location location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
 
+        //set location in geopoint
         geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+
+        //set up UI
         postEditTextTitle = (EditText) findViewById(R.id.post_editTextTitle);
         postEditTextDetails = (EditText) findViewById(R.id.post_editTextDetails);
         postEditTextTags = (EditText) findViewById(R.id.post_editTextTags);
@@ -70,6 +74,7 @@ public class PostActivity extends Activity {
             Toast toast = Toast.makeText(context, alert, duration);
             toast.show();
         }
+
         else {
             // Set up a progress dialog
             final ProgressDialog dialog = new ProgressDialog(PostActivity.this);

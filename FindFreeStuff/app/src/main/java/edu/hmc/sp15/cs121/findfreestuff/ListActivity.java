@@ -16,11 +16,14 @@ import com.parse.ParseUser;
  * Created by Woky on 3/1/15.
  */
 public class ListActivity extends Activity {
+
+    //fills the listview
     private ParseQueryAdapter<ParseObject> titleAdapter;
+    //UI reference
     private ListView listView;
+    //location reference
     private Location location;
 
-    // Inside an Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
@@ -32,7 +35,9 @@ public class ListActivity extends Activity {
             locationPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         }
 
+        //get an adapter that only returns nearby items
         titleAdapter = new ListQueryAdapter(getApplicationContext(), Application.STRING_MAXDISTANCE, locationPoint, ParseUser.getCurrentUser().getDouble(Application.STRING_MAXDISTANCE));
+        //show item titles
         titleAdapter.setTextKey(Application.STRING_TITLE);
 
         // Initialize ListView and set initial view to titleAdapter
@@ -57,9 +62,18 @@ public class ListActivity extends Activity {
             Intent intent = new Intent(ListActivity.this, ItemActivity.class);
             intent.putExtra(Application.INTENT_EXTRA_LOCATION, location);
             intent.putExtra(Application.INTENT_EXTRA_ID, item.getObjectId());
+            //if the result is less than zero, we deleted an item in the list
+            //if zero, we claimed an item in the list
             startActivityForResult(intent, 0);
         }
         else {
+            titleAdapter.loadObjects();
+        }
+    }
+
+    //updates list if we learn that we claimed or deleted and item
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode <= 0) {
             titleAdapter.loadObjects();
         }
     }

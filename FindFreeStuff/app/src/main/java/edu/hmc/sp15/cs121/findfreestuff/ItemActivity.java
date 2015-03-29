@@ -21,6 +21,9 @@ import com.parse.ParseUser;
 
 /**
  * Created by reidcallan on 2/20/15.
+ *
+ * Shows the details of a clicked-on item
+ * Allows for editing if the item was posted by the current user
  */
 public class ItemActivity extends Activity {
 
@@ -31,10 +34,12 @@ public class ItemActivity extends Activity {
     private EditText titleText;
     private EditText detailsText;
     private EditText tagsText;
+    //data references
     private ParseGeoPoint geopoint;
     private FreeItem item;
     Context context;
     private String id;
+    //strings for edit/update button
     private final String edit = "Edit";
     private final String update = "Update";
 
@@ -64,7 +69,7 @@ public class ItemActivity extends Activity {
                     //get item location
                     ParseGeoPoint location = item.getLocation();
 
-                    //set up the title and details views
+                    //set up the title tags, and details views
                     titleText = (EditText) findViewById(R.id.item_TitleText);
                     detailsText = (EditText) findViewById(R.id.item_DetailsText);
                     tagsText = (EditText) findViewById(R.id.item_TagsText);
@@ -77,9 +82,10 @@ public class ItemActivity extends Activity {
                     claimButton.setEnabled(true);
 
 
-                    //set textfield text with item title/details
+                    //if we have found the item
                     if (item != null) {
 
+                        //show the title, tags, and details
                         titleText.setHint(item.getPostTitle());
                         detailsText.setHint(item.getPostDetails());
                         if (item.getTags() != null) {
@@ -145,6 +151,7 @@ public class ItemActivity extends Activity {
                     }
 
                 } else {
+                    //something went wrong with the query
                     Log.d("Error:", e.getMessage());
                 }
             }
@@ -161,7 +168,7 @@ public class ItemActivity extends Activity {
                     item = (FreeItem) object;
 
 
-                    //if we are close enough delete the item from parse
+                    //if we are close enough, delete the item from parse
                     if (geopoint.distanceInMilesTo(item.getLocation()) < .25) {
                         //delete item from parse
                         item.deleteInBackground();
@@ -169,7 +176,11 @@ public class ItemActivity extends Activity {
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(context, congrats, duration);
                         toast.show();
+                        //used for callback to other activities
+                        //in preferences activity, a negative result means that
+                        //a user's item was deleted and it needs to refresh its list
                         setResult(0);
+                        //ends the activity
                         finish();
                     }
                     //otherwise you have to get closer
@@ -245,7 +256,11 @@ public class ItemActivity extends Activity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     editUpdateButton.setEnabled(false);
+                    //used for callback to other activities
+                    //in preferences activity, a negative result means that
+                    //a user's item was deleted and it needs to refresh its list
                     setResult(-1);
+                    //end this activity as the item no longer exists
                     finish();
                 }
                 else {
