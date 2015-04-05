@@ -30,13 +30,17 @@ import java.util.List;
  */
 public class PreferencesActivity extends Activity {
 
+    //user reference
     private ParseUser user;
+
+    //UI references
     private Button updateDistanceButton;
     private ListView myItems;
     private EditText newDistance;
     private TextView usernameText;
     private TextView distanceText;
-    private final String maxDistance = "maxDistance";
+
+    //Data references
     private Context context;
     private ListQueryAdapter adapter;
     private Location location;
@@ -46,11 +50,14 @@ public class PreferencesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        //Get the Intent and the current location
         Intent intent = getIntent();
-
         location = intent.getParcelableExtra(Application.INTENT_EXTRA_LOCATION);
 
+        //get the context
         context = getApplicationContext();
+
+        //Find UI components
         myItems = (ListView) findViewById(R.id.preferences_ListOfItems);
         newDistance = (EditText) findViewById(R.id.preferences_ItemDistanceField);
         usernameText = (TextView) findViewById(R.id.preferences_Username);
@@ -58,15 +65,14 @@ public class PreferencesActivity extends Activity {
 
         //get current user
         user = ParseUser.getCurrentUser();
-        if (user.get(maxDistance) == null) {
-            user.put(maxDistance, 5.0);
-
+        if (user.get(Application.STRING_MAXDISTANCE) == null) {
+            user.put(Application.STRING_MAXDISTANCE, 5.0);
             user.saveInBackground();
         }
 
         //fill list view with user created items
-        adapter = new ListQueryAdapter(context);
-        adapter.setTextKey("title");
+        adapter = new ListQueryAdapter(context, Application.STRING_USER, null, null);
+        adapter.setTextKey(Application.STRING_TITLE);
         myItems.setAdapter(adapter);
         adapter.loadObjects();
 
@@ -78,10 +84,10 @@ public class PreferencesActivity extends Activity {
             }
         });
 
-        CharSequence maxDistanceText = "" +  user.get(maxDistance);
+        //set up distance UI
+        CharSequence maxDistanceText = "" +  user.get(Application.STRING_MAXDISTANCE);
         distanceText.setText(maxDistanceText);
         usernameText.setText(user.getUsername());
-
         updateDistanceButton = (Button) findViewById(R.id.preferences_setDistanceButton);
         updateDistanceButton.setEnabled(true);
         updateDistanceButton.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +116,7 @@ public class PreferencesActivity extends Activity {
         try {
            distanceNum = Double.parseDouble(distance);
            distanceText.setText(distance);
-           user.put(maxDistance, distanceNum);
+           user.put(Application.STRING_MAXDISTANCE, distanceNum);
            user.saveInBackground();
         }
         catch (NumberFormatException e){

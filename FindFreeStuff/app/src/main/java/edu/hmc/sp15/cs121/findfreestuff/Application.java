@@ -9,6 +9,13 @@ public class Application extends android.app.Application {
 
     public static final String INTENT_EXTRA_LOCATION = "location";
     public static final String INTENT_EXTRA_ID = "id";
+    public static final String FREE_ITEM_CLASS = "FreeItem";
+    public static final String STRING_LOCATION = "location";
+    public static final String STRING_TITLE = "title";
+    public static final String STRING_MAXDISTANCE = "maxDistance";
+    public static final String STRING_TAGS = "tags";
+    public static final String STRING_DETAILS = "details";
+    public static final String STRING_USER = "user";
 
 
 

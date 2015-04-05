@@ -38,6 +38,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,8 +62,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
     private EditText searchValue;
     private boolean isSearching;
-
-    private String freeItemParseName = "FreeItem";
 
     ///////////////////////////// Activity Lifetime Functions /////////////////////////////////////
 
@@ -100,8 +99,6 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
             }
         });
 
-
-
         //Set up the handler for the Preferences button click
         Button preferencesButton = (Button) findViewById(R.id.preferences_button);
         preferencesButton.setOnClickListener(new View.OnClickListener() {
@@ -123,17 +120,18 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 }
             });
 
-        searchValue = (EditText) findViewById(R.id.search_value);
-        isSearching = false;
-
+        // Set up the handler for the search button click
         Button searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                isSearching = true;
-                displaySearchedStuff();
+                    if (searchValue.getText().toString().trim().length() > 0) {
+                        isSearching = true;
+                        displaySearchedStuff();
+                    }
                 }
             });
 
+        // Set up the handler for the search reset button click
         Button searchResetButton = (Button) findViewById(R.id.button_search_reset);
         searchResetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -141,6 +139,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 displayFreeStuff();
             }
         });
+
+        // Setup the search bar and the internal searching state
+        searchValue = (EditText) findViewById(R.id.search_value);
+        isSearching = false;
 
         displayFreeStuff();
     }
@@ -190,17 +192,22 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
     }
 
     /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Claremont, and move the camera to that marker.
+     * Setup for the map. Moves the initial view to the current location if it exists, and
+     * Claremont otherwise. Calls the proper function for displaying the correct Free Items.
      * <p/>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
         LatLng claremont = new LatLng(34.1067409,-117.7072027);
 
-        // Move initial view to Claremont, as emulator doesn't like initializing with GPS location
+        // Move initial view to Claremont if there is no current location
         mMap.setMyLocationEnabled(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
+
+        if (currentLocation == null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(claremont, 13));
+        } else {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 13));
+        }
 
         // Set zoom controls enabled, really helps with emulator
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -222,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         final String freeItemID = markerIDs.get(marker.getId());
         // Create and make a Parse Query for a free item with
         // the ID associated with this marker
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
         query.getInBackground(freeItemID, new GetCallback<ParseObject>() {
             public void done(ParseObject freeItem, ParseException e) {
                 // If the free item actually exists, display its details
@@ -253,53 +260,19 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
      * as Markers.
      */
     private void displayFreeStuff() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(freeItemParseName);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
 
         // If there is a valid currentLocation, make the query based on the location of the user and
         // the user's maxDistance. Otherwise, get all of the Free Items.
         if (currentLocation != null) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-            query.whereWithinMiles("location", currentLocationGeoPoint, currentUser.getDouble("maxDistance"));
+            query.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
         }
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
-                if (e == null) {
-                    // Create HashSet of markers to keep on the map
-                    Set<String> toKeep = new HashSet<String>();
-
-                    // For each Free Item from Parse, if it has a "location" data member
-                    // display it on the Map with a marker
-                    for (int i = 0; i < freeStuffList.size(); ++i ) {
-                        // Grab the free item from the list returned by the Parse Query
-                        // and try to extract its location/ID
-                        ParseObject freeItem = freeStuffList.get(i);
-                        String freeItemID = freeItem.getObjectId();
-                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
-                        // Add the marker to the to list of markers to keep on the map
-                        toKeep.add(freeItemID);
-                        // Try to grab existing marker for this free item
-                        Marker freeItemMarker = mapMarkers.get(freeItemID);
-                        // If the marker does not already exist
-                        if (freeItemMarker == null) {
-                            // If the location value of the Parse Object exists
-                            if (freeItemLocation != null) {
-                                // Put a marker on the map with the proper information
-                                LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
-                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString("title")));
-                                // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
-                                mapMarkers.put(freeItemID, newMarker);
-                                // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
-                                markerIDs.put(newMarker.getId(), freeItemID);
-                            }
-                        }
-                    }
-                    // Clean up all of the markers that are not in toKeep
-                    cleanUpMarkers(toKeep);
-                } else {
-                    Log.d("Logging Message", "Error: " + e.getMessage());
-                }
+                displayHelper(freeStuffList, e);
             }
         });
     }
@@ -311,82 +284,120 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
         for (String objId : new HashSet<String>(mapMarkers.keySet())) {
             if (!markersToKeep.contains(objId)) {
                 Marker marker = mapMarkers.get(objId);
+
                 markerIDs.remove(marker.getId());
                 marker.remove();
+
                 mapMarkers.get(objId).remove();
                 mapMarkers.remove(objId);
             }
         }
     }
 
+    //helper function that updates marker hash sets to help display items on the map
+    private void displayHelper(List<ParseObject> freeStuffList, ParseException e) {
+        if (e == null) {
+            // Create HashSet of markers to keep on the map
+            Set<String> toKeep = new HashSet<String>();
+
+            // For each Free Item from Parse, if it has a "location" data member
+            // display it on the Map with a marker
+            for (int i = 0; i < freeStuffList.size(); ++i ) {
+                // Grab the free item from the list returned by the Parse Query
+                // and try to extract its location/ID
+                ParseObject freeItem = freeStuffList.get(i);
+                String freeItemID = freeItem.getObjectId();
+                ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
+                // Add the marker to the to list of markers to keep on the map
+                toKeep.add(freeItemID);
+                // Try to grab existing marker for this free item
+                Marker freeItemMarker = mapMarkers.get(freeItemID);
+                // If the marker does not already exist
+                if (freeItemMarker == null) {
+                    // If the location value of the Parse Object exists
+                    if (freeItemLocation != null) {
+                        // Put a marker on the map with the proper information
+                        LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
+                        Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString(Application.STRING_TITLE)));
+                        // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
+                        mapMarkers.put(freeItemID, newMarker);
+                        // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
+                        markerIDs.put(newMarker.getId(), freeItemID);
+                    }
+                }
+            }
+            // Clean up all of the markers that are not in toKeep
+            cleanUpMarkers(toKeep);
+        } else {
+            Log.d("Logging Message", "Error: " + e.getMessage());
+        }
+    }
+
     /*
-     *
+     * Retrieves Free Items from the Parse Core backend based on user search parameters
+     * and displays them on the map as Markers.
      */
     private void displaySearchedStuff() {
         // Make parse query with the searchValue
-        ParseQuery<ParseObject> searchQuery = ParseQuery.getQuery(freeItemParseName);
+        //ParseQuery<ParseObject> tagsQuery = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+        List<ParseQuery<ParseObject>> queriesList = new ArrayList<ParseQuery<ParseObject>>();
+
+        // Get the search value from the search box and create an array from the comma-separated values
+        String searchString = searchValue.getText().toString().trim();
+        // Have query return only items that have all of the search values in their "tags" data member
+        Collection<String> searchValues = Arrays.asList(searchString.split(","));
+
+        // Make the Logical or (using ParseQuery.or()) of queries for each of the search terms in
+        // the "title" of each Free Item
+        // NOTE: using ParseQuery.or greatly limits the number of search terms we can enter. At
+        // the moment as we are converting the title values to search for both initial capitalized
+        // and totally uncapitalized, we can do at max 3 terms per search.
+        // So, it seems that using ParseQuery.or we can do at max 9 search terms. Not ideal, but
+        // not too bad.
+        for (String value : searchValues) {
+            value = value.toLowerCase();
+
+            // Fully lower-case
+            ParseQuery<ParseObject> titleQueryLower = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            ParseQuery<ParseObject> tagsQueryLower = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            titleQueryLower.whereContains(Application.STRING_TITLE, value);
+            tagsQueryLower.whereContains(Application.STRING_TAGS, value);
+
+            // With first letter capitalized (for titles)
+            ParseQuery<ParseObject> titleQueryUpper = ParseQuery.getQuery(Application.FREE_ITEM_CLASS);
+            titleQueryUpper.whereContains(Application.STRING_TITLE, (value.substring(0,1).toUpperCase() + value.substring(1)));
+
+            queriesList.add(titleQueryLower);
+            queriesList.add(titleQueryUpper);
+            queriesList.add(tagsQueryLower);
+        }
 
         // If there is a valid currentLocation, make the query based on the location of the user and
         // the user's maxDistance. Otherwise, get all of the Free Items.
         if (currentLocation != null) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             ParseGeoPoint currentLocationGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-            searchQuery.whereWithinMiles("location", currentLocationGeoPoint, currentUser.getDouble("maxDistance"));
+
+            for (ParseQuery query : queriesList) {
+                query.whereWithinMiles(Application.STRING_LOCATION, currentLocationGeoPoint, currentUser.getDouble(Application.STRING_MAXDISTANCE));
+            }
+
         }
 
-        String searchString = searchValue.getText().toString().trim();
-        ArrayList<String> tagList = new ArrayList<String>(Arrays.asList(searchString.split(",")));
+        ParseQuery<ParseObject> searchQuery = ParseQuery.or(queriesList);
 
-        //for (String tag : tagList) {
-            //System.out.println("#### tag is: " + tag);
-            //searchQuery.whereContains("tags", searchString);
-            //searchQuery.whereContainsAll("tags", tagList);
-        searchQuery.whereContainsAll("tags", Arrays.asList(searchString.split(",")));
-        //}
-
-        System.out.println("#### tags to search are: " + searchString);
         searchQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
-
-                if (e == null) {
-
-                    Set<String> toKeep = new HashSet<String>();
-
-
-                    for (int i = 0; i < freeStuffList.size(); ++i ) {
-
-                        ParseObject freeItem = freeStuffList.get(i);
-                        String freeItemID = freeItem.getObjectId();
-                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint("location");
-                        // Add the marker to the to list of markers to keep on the map
-                        toKeep.add(freeItemID);
-                        // Try to grab existing marker for this free item
-                        Marker freeItemMarker = mapMarkers.get(freeItemID);
-                        // If the marker does not already exist
-                        if (freeItemMarker == null) {
-                            // If the location value of the Parse Object exists
-                            if (freeItemLocation != null) {
-                                // Put a marker on the map with the proper information
-                                LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
-                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString("title")));
-                                // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
-                                mapMarkers.put(freeItemID, newMarker);
-                                // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
-                                markerIDs.put(newMarker.getId(), freeItemID);
-                            }
-                        }
-                    }
-                    // Clean up all of the markers that are not in toKeep
-                    cleanUpMarkers(toKeep);
-                } else {
-                    Log.d("Logging Message", "Error: " + e.getMessage());
-                }
+                displayHelper(freeStuffList, e);
             }
         });
+
+//        namesQuery.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> freeStuffList, ParseException e) {
+//                displayHelper(freeStuffList, e);
+//            }
+//        });
     }
-
-
-
 
 
     ///////////////////// Google Play Location Services Functions //////////////////////////////////
@@ -441,7 +452,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
     @Override
     public void onConnectionSuspended(int i) {
-        /// Log.i(TAG, "GoogleApiClient connection has been suspend");
+        //Log.i(TAG, "GoogleApiClient connection has been suspend");
     }
 
     @Override
