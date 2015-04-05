@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
@@ -9,12 +9,12 @@
         android:text="Free Item:"
         android:id="@+id/item_TitleLabel" />
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/item_TitleText"
-        android:hint="Title"
-        android:textColorHint="#000000" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Title"
+        android:id="@+id/item_Title" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,25 +22,12 @@
         android:text="Details:"
         android:id="@+id/item_DetailsLabel" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_DetailsText"
-        android:textColorHint="#000000"
-        android:hint="Details" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tags:"
-        android:id="@+id/item_TagsLabel" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_TagsText"
-        android:textColorHint="#000000"
-        android:hint="Tags" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Details"
+        android:id="@+id/item_Details" />
 
     <Button
         android:layout_width="wrap_content"
@@ -48,11 +35,11 @@
         android:text="Claim Item"
         android:id="@+id/item_ClaimButton" />
 
-    <Button
+    <CheckBox
+        android:id="@+id/partialClaim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Item"
-        android:id="@+id/item_DeleteButton"
-        android:layout_gravity="right"
-        android:visibility="invisible" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/partial_claim" />
+
 </LinearLayout>

@@ -63,5 +63,7 @@ public class FreeItem extends ParseObject {
     public static ParseQuery<FreeItem> getQuery() {
         return ParseQuery.getQuery(FreeItem.class);
     }
+    public String getPartialClaim() { return getString("partialClaim"); }
+    public void setPartialClaim(String value) { put("partialClaim", value); }
 }
 
