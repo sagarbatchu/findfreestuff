@@ -26,7 +26,7 @@
         android:clickable="true"
         android:backgroundTint="#ff5ddb8a"
         android:background="@drawable/roundedbutton"
-        android:accessibilityLiveRegion="polite"
+        android:accessibilityLiveRegion="polite" 
         android:text="@string/login" />
 
     <Button
@@ -52,21 +52,20 @@
         android:id="@+id/textview_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp"
         android:text="@string/powered_by"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_above="@+id/textview_2"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textview_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textview_1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
         android:text="@string/parse"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textSize="15sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textview_3"

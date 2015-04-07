@@ -1,20 +1,23 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SignUpActivity" >
+    tools:context=".LoginActivity" >
 
     <!-- Login form -->
 
     <ScrollView
-        android:id="@+id/signup_form"
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:longClickable="true"
+        android:background="#ff000000"
+        android:outlineProvider="bounds">
 
         <LinearLayout
             style="@style/LoginFormContainer"
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/username_edit_text"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_username"
@@ -36,67 +39,46 @@
                 android:accessibilityLiveRegion="polite" />
 
             <EditText
-                android:id="@+id/password_edit_text"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:clickable="true"
-                android:ellipsize="middle"
-                android:textIsSelectable="true"
+                android:imeActionId="@+id/edittext_action_login"
+                android:imeActionLabel="@string/progress_login"
+                android:imeOptions="actionUnspecified"
                 android:typeface="sans"
-                android:focusable="true"
-                android:enabled="true"
-                android:focusableInTouchMode="true"
-                android:visibility="visible"
-                android:padding="5dip"
-                android:textSize="25dip"
-                android:background="@drawable/rounded_edittext_states"
-                android:accessibilityLiveRegion="polite" />
-            
-            <EditText
-                android:id="@+id/password_again_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password_again"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:imeActionId="@+id/edittext_action_signup"
-                android:imeActionLabel="@string/signup"
-                android:clickable="true"
-                android:ellipsize="middle"
-                android:textIsSelectable="true"
-                android:typeface="sans"
-                android:focusable="true"
-                android:enabled="true"
-                android:focusableInTouchMode="true"
-                android:visibility="visible"
-                android:padding="5dip"
-                android:textSize="25dip"
-                android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:imeOptions="actionUnspecified" />
+                android:layout_weight="10"
+                android:selectAllOnFocus="true"
+                android:phoneNumber="false"
+                android:password="true"
+                android:padding="5dip"
+                android:textSize="25dip"
+                android:background="@drawable/rounded_edittext_states"
+                android:outlineProvider="none" />
 
             <Button
                 android:id="@+id/action_button"
-                android:layout_width="144dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginTop="16dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
+                android:text="login"
+                android:textAlignment="center"
                 android:typeface="sans"
                 android:enabled="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:clickable="true"
-                android:backgroundTint="#ff5ddb8a"
+                android:backgroundTint="#ffb50005"
                 android:background="@drawable/roundedbutton"
-                android:accessibilityLiveRegion="polite"
-                android:text="@string/signup" />
+                android:accessibilityLiveRegion="polite" />
+
         </LinearLayout>
     </ScrollView>
 
