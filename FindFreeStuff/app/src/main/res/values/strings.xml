@@ -11,7 +11,7 @@
     <string name="button_search">Start Search</string>
     <string name="button_search_reset">Reset Search</string>
     <string name="title_item_activity">Free Item Information</string>
-    <string name="tile_activity_preferences">User Preferences</string>
+    <string name="title_activity_preferences">User Preferences</string>
     <string name="login">Log In</string>
     <string name="logout_full">Lot oug of Find Free Stuff</string>
     <string name="logout">Log Out</string>

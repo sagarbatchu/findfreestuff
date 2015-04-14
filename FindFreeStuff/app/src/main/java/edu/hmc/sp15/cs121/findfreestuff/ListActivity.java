@@ -36,7 +36,7 @@ public class ListActivity extends Activity {
         }
 
         //get an adapter that only returns nearby items
-        titleAdapter = new ListQueryAdapter(getApplicationContext(), Application.STRING_MAXDISTANCE, locationPoint, ParseUser.getCurrentUser().getDouble(Application.STRING_MAXDISTANCE));
+        titleAdapter = new ListQueryAdapter(getApplicationContext(), Application.STRING_MAXDISTANCE, locationPoint, ParseUser.getCurrentUser().getDouble(Application.STRING_MAXDISTANCE), null);
         //show item titles
         titleAdapter.setTextKey(Application.STRING_TITLE);
 

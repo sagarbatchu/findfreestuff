@@ -6,7 +6,8 @@
     android:focusable="true"
     android:baselineAligned="false"
     android:clickable="true"
-    android:divider="@android:color/holo_blue_dark">
+    android:divider="@android:color/holo_blue_dark"
+    android:id="@+id/item_TitleText">
 
 
 
@@ -47,7 +48,7 @@
         android:textSize="30sp"
         android:textStyle="normal"
         android:textColor="#ff5ddb8a"
-        android:id="@+id/item_Details" />
+        android:id="@+id/item_DetailsText" />
 
     <Button
         android:layout_width="wrap_content"

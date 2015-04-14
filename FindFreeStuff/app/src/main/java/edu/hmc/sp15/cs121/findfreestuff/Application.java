@@ -16,6 +16,7 @@ public class Application extends android.app.Application {
     public static final String STRING_TAGS = "tags";
     public static final String STRING_DETAILS = "details";
     public static final String STRING_USER = "user";
+    public static final String STRING_WISHLIST = "wishlist";
 
 
 
