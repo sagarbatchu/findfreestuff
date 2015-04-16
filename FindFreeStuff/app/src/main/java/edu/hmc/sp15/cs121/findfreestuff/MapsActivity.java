@@ -118,21 +118,21 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 Intent intent2 = new Intent(MapsActivity.this, ListActivity.class);
                 intent2.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
                 startActivity(intent2);
-                }
-            });
+            }
+        });
 
         // Set up the handler for the search button click
         Button searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                    if (searchValue.getText().toString().trim().length() > 0) {
-                        isSearching = true;
-                        displaySearchedStuff();
-                        //displaySearchedStuff();
+                if (searchValue.getText().toString().trim().length() > 0) {
+                    isSearching = true;
+                    displaySearchedStuff();
+                    //displaySearchedStuff();
 
-                    }
                 }
-            });
+            }
+        });
 
         // Set up the handler for the search reset button click
         Button searchResetButton = (Button) findViewById(R.id.button_search_reset);
@@ -245,8 +245,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     startActivity(intent);
 
                     return;
-                // If the free item does not actually exist, remove it from our hash maps
-                // and remove its marker from the map
+                    // If the free item does not actually exist, remove it from our hash maps
+                    // and remove its marker from the map
                 } else {
                     mapMarkers.remove(freeItemID);
                     markerIDs.remove(marker.getId());
