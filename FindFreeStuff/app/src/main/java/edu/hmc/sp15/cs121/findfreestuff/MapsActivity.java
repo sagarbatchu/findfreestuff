@@ -118,21 +118,21 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                 Intent intent2 = new Intent(MapsActivity.this, ListActivity.class);
                 intent2.putExtra(Application.INTENT_EXTRA_LOCATION, currentLocation);
                 startActivity(intent2);
-                }
-            });
+            }
+        });
 
         // Set up the handler for the search button click
         Button searchButton = (Button) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                    if (searchValue.getText().toString().trim().length() > 0) {
-                        isSearching = true;
-                        displaySearchedStuff();
-                        //displaySearchedStuff();
+                if (searchValue.getText().toString().trim().length() > 0) {
+                    isSearching = true;
+                    displaySearchedStuff();
+                    //displaySearchedStuff();
 
-                    }
                 }
-            });
+            }
+        });
 
         // Set up the handler for the search reset button click
         Button searchResetButton = (Button) findViewById(R.id.button_search_reset);
@@ -245,8 +245,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
                     startActivity(intent);
 
                     return;
-                // If the free item does not actually exist, remove it from our hash maps
-                // and remove its marker from the map
+                    // If the free item does not actually exist, remove it from our hash maps
+                    // and remove its marker from the map
                 } else {
                     mapMarkers.remove(freeItemID);
                     markerIDs.remove(marker.getId());
@@ -409,41 +409,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener,
 
         searchQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> freeStuffList, ParseException e) {
-                if (e == null) {
-                    // Create HashSet of markers to keep on the map
-                    Set<String> toKeep = new HashSet<String>();
-
-                    // For each Free Item from Parse, if it has a "location" data member
-                    // display it on the Map with a marker
-                    for (int i = 0; i < freeStuffList.size(); ++i ) {
-                        // Grab the free item from the list returned by the Parse Query
-                        // and try to extract its location/ID
-                        ParseObject freeItem = freeStuffList.get(i);
-                        String freeItemID = freeItem.getObjectId();
-                        ParseGeoPoint freeItemLocation = freeItem.getParseGeoPoint(Application.STRING_LOCATION);
-                        // Add the marker to the to list of markers to keep on the map
-                        toKeep.add(freeItemID);
-                        // Try to grab existing marker for this free item
-                        Marker freeItemMarker = mapMarkers.get(freeItemID);
-                        // If the marker does not already exist
-                        if (freeItemMarker == null) {
-                            // If the location value of the Parse Object exists
-                            if (freeItemLocation != null) {
-                                // Put a marker on the map with the proper information
-                                LatLng freeItemLatLong = new LatLng(freeItemLocation.getLatitude(), freeItemLocation.getLongitude());
-                                Marker newMarker = mMap.addMarker(new MarkerOptions().position(freeItemLatLong).title(freeItem.getString(Application.STRING_TITLE)));
-                                // Put the marker in the mapMarkers hash map, keyed to Parse Object ID
-                                mapMarkers.put(freeItemID, newMarker);
-                                // Put the Parse Object ID in the markerIDs hash map, keyed to the marker ID
-                                markerIDs.put(newMarker.getId(), freeItemID);
-                            }
-                        }
-                    }
-                    // Clean up all of the markers that are not in toKeep
-                    cleanUpMarkers();
-                } else {
-                    Log.d("Logging Message", "Error: " + e.getMessage());
-                };
+                displayHelper(freeStuffList, e);
             }
         });
     }
