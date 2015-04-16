@@ -8,33 +8,43 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="#000000">
 
 <Button
     android:id="@+id/post_button"
-    android:layout_width="match_parent"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:text="@string/post"
-    android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+    android:layout_gravity="center_horizontal"
+    android:textSize="20sp"
+    android:textColor="#ffffff"
+    android:background="#5ddb8a" />
 
-<Button
-    android:id="@+id/list_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="List of Items"
-    android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Preferences"
+        android:id="@+id/preferences_button"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:background="#5ddb8a" />
 
-<Button
-    android:id="@+id/logout_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/logout"
-    android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="List View"
+        android:id="@+id/listview_button"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:background="#5ddb8a" />
 
-
-
-
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment" />

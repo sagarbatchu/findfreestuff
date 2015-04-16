@@ -2,31 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#000000">
 
     <TextView
         android:layout_width="138dp"
         android:layout_height="wrap_content"
         android:text="Post Title"
-        android:id="@+id/postTitle" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/postTitle"
+        android:textSize="23sp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/post_editTextTitle"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post Details"
-        android:id="@+id/postDetails" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/postDetails"
+        android:textSize="23sp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/post_editTextDetails"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +53,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post!"
+        android:textColor="#ffffff"
         android:id="@+id/post_PostButton"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#5ddb8a"
+        android:textSize="20sp" />
 </LinearLayout>

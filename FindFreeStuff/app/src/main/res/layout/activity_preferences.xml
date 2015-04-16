@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username:"
-        android:id="@+id/preferences_nameText" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_nameText"
+        android:textSize="23sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="SetToUsername"
-        android:id="@+id/preferences_Username" />
+        android:textColor="#ffffff"
+        android:id="@+id/preferences_Username"
+        android:textSize="19sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Maximum Item Distance:"
-        android:id="@+id/preferences_ItemDistanceTitle" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_ItemDistanceTitle"
+        android:textSize="23sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="SetToItemDistance"
-        android:id="@+id/preferences_ItemDistance" />
+        android:textColor="#ffffff"
+        android:id="@+id/preferences_ItemDistance"
+        android:textSize="19sp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,25 +44,41 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/preferences_ItemDistanceField"
-        android:hint="Type a new distance here" />
+        android:hint="Type a new distance here"
+        android:textColorHint="#d1cfd5"
+        android:textColor="#ffffff"
+        android:textSize="17sp" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
         android:text="Update Distance"
+        android:textColor="#ffffff"
+        android:background="#5ddb8a"
         android:id="@+id/preferences_setDistanceButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:text="Logout"
+        android:textColor="#ffffff"
+        android:background="#5ddb8a"
+        android:id="@+id/logout_button" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Items:"
-        android:id="@+id/preferences_MyPostsTitle" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_MyPostsTitle"
+        android:textSize="23sp" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/preferences_ListOfItems"
-        android:layout_gravity="center_horizontal"
-        android:headerDividersEnabled="false" />
+        android:headerDividersEnabled="false"/>
 
 </LinearLayout>
