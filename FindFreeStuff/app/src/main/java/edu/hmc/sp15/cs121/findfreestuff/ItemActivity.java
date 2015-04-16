@@ -70,9 +70,9 @@ public class ItemActivity extends Activity {
                     ParseGeoPoint location = item.getLocation();
 
                     //set up the title tags, and details views
-                    titleText = (EditText) findViewById(R.id.item_TitleText);
-                    detailsText = (EditText) findViewById(R.id.item_DetailsText);
-                    tagsText = (EditText) findViewById(R.id.item_TagsText);
+                    //titleText = (EditText) findViewById(R.id.item_TitleText);
+                    //detailsText = (EditText) findViewById(R.id.item_DetailsText);
+                    //tagsText = (EditText) findViewById(R.id.item_TagsText);
                     titleText.setEnabled(false);
                     detailsText.setEnabled(false);
                     tagsText.setEnabled(false);

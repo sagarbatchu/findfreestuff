@@ -64,4 +64,13 @@
         android:textColor="#ff5ddb8a"
         android:text="@string/partial_claim" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:id="@+id/item_DeleteButton"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        android:enabled="false" />
+
 </LinearLayout>
