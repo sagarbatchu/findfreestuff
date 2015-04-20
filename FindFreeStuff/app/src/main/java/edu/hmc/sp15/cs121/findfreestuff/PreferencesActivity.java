@@ -15,15 +15,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by reidcallan on 2/24/15.
@@ -39,11 +48,13 @@ public class PreferencesActivity extends Activity {
     private EditText newDistance;
     private TextView usernameText;
     private TextView distanceText;
+    private Button wishButton;
 
     //Data references
     private Context context;
-    private ListQueryAdapter adapter;
+    private ListQueryAdapter userAdapter; // for user created items
     private Location location;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +81,21 @@ public class PreferencesActivity extends Activity {
             user.saveInBackground();
         }
 
-        //fill list view with user created items
-        adapter = new ListQueryAdapter(context, Application.STRING_USER, null, null);
-        adapter.setTextKey(Application.STRING_TITLE);
-        myItems.setAdapter(adapter);
-        adapter.loadObjects();
+        //fill myItems with user created items
+        userAdapter = new ListQueryAdapter(context, Application.STRING_USER, null, null, null);
+        userAdapter.setTextKey(Application.STRING_TITLE);
+        myItems.setAdapter(userAdapter);
+        userAdapter.loadObjects();
 
         myItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 goToItem(position);
-                adapter.loadObjects();
+                userAdapter.loadObjects();
             }
         });
+
+
 
         //set up distance UI
         CharSequence maxDistanceText = "" +  user.get(Application.STRING_MAXDISTANCE);
@@ -108,6 +121,15 @@ public class PreferencesActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        wishButton = (Button) findViewById(R.id.preferences_wishlistButton);
+        wishButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(PreferencesActivity.this, WishlistActivity.class);
+                intent.putExtra(Application.INTENT_EXTRA_LOCATION, location);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateDistance () {
@@ -128,26 +150,22 @@ public class PreferencesActivity extends Activity {
     }
 
     private void goToItem (int position) {
-        if (adapter.getItem(position) != null) {
-            FreeItem item = (FreeItem) adapter.getItem(position);
+        if (userAdapter.getItem(position) != null) {
+            FreeItem item = (FreeItem) userAdapter.getItem(position);
             Intent intent = new Intent(PreferencesActivity.this, ItemActivity.class);
             intent.putExtra(Application.INTENT_EXTRA_LOCATION, location);
             intent.putExtra(Application.INTENT_EXTRA_ID, item.getObjectId());
             startActivityForResult(intent, 0);
         }
         else {
-            adapter.loadObjects();
+            userAdapter.loadObjects();
         }
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         if (resultCode < 0) {
-            adapter.loadObjects();
+            userAdapter.loadObjects();
         }
     }
-
-
-
-
 
 }

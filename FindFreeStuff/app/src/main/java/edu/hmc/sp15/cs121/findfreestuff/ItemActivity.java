@@ -3,6 +3,8 @@ package edu.hmc.sp15.cs121.findfreestuff;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,8 +72,8 @@ public class ItemActivity extends Activity {
                     ParseGeoPoint location = item.getLocation();
 
                     //set up the title tags, and details views
-                    //titleText = (EditText) findViewById(R.id.item_TitleText);
-                    //detailsText = (EditText) findViewById(R.id.item_DetailsText);
+                    titleText = (EditText) findViewById(R.id.item_TitleText);
+                    detailsText = (EditText) findViewById(R.id.item_DetailsText);
                     //tagsText = (EditText) findViewById(R.id.item_TagsText);
                     titleText.setEnabled(false);
                     detailsText.setEnabled(false);
@@ -120,14 +122,14 @@ public class ItemActivity extends Activity {
                                 }
                             });
 
-                            //make the delete button visible
+                            /*make the delete button visible
                             deleteButton = (Button) findViewById(R.id.item_DeleteButton);
                             deleteButton.setVisibility(View.VISIBLE);
                             deleteButton.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     delete();
                                 }
-                            });
+                            });*/
 
 
                         }
