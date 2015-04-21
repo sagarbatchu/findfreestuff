@@ -77,7 +77,7 @@
         android:layout_marginTop="23dp"
         android:textColor="#ff5ddb8a"
         android:typeface="sans"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:text="@string/slogan"
         android:textAppearance="?android:attr/textAppearanceLarge" />

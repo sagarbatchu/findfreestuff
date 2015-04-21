@@ -12,13 +12,13 @@
 
 <Button
     android:id="@+id/post_button"
-    android:layout_width="125dp"
+    android:layout_width="328dp"
     android:layout_height="wrap_content"
     android:text="@string/post"
     android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
     <Button
-        android:layout_width="109dp"
+        android:layout_width="323dp"
         android:layout_height="wrap_content"
         android:text="Preferences"
         android:id="@+id/preferences_button"
