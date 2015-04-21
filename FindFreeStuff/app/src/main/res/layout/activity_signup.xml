@@ -8,12 +8,11 @@
         android:id="@+id/signup_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000">
+        android:background="@android:color/holo_orange_light">
 
         <LinearLayout
             style="@style/LoginFormContainer"
-            android:orientation="vertical"
-            android:background="#000000">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/username_edit_text"
@@ -24,7 +23,8 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#ffffff"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textIsSelectable="false" />
 
             <EditText
                 android:id="@+id/password_edit_text"
@@ -60,7 +60,7 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
                 android:text="@string/signup"
-                android:background="#5ddb8a"
+                android:background="@drawable/roundedbutton"
                 android:textColor="#ffffff" />
         </LinearLayout>
     </ScrollView>

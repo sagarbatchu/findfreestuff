@@ -44,6 +44,35 @@
         android:textSize="20sp"
         android:background="#5ddb8a" />
 
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText android:id="@+id/search_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/start_search" />
+        <Button
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@string/button_search"
+            android:background="@drawable/roundedbutton"
+            android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/button_search_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@string/button_search_reset"
+            android:background="@drawable/roundedbutton"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"

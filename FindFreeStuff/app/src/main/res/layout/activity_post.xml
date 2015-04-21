@@ -3,59 +3,75 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    android:background="#000000">
+    android:background="#000000"
+    android:visibility="visible">
 
     <TextView
         android:layout_width="138dp"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="Post Title"
         android:textColor="#5ddb8a"
         android:id="@+id/postTitle"
         android:textSize="23sp" />
 
     <EditText
+        android:background="@drawable/edittext_border"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
         android:id="@+id/post_editTextTitle"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:typeface="sans" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="Post Details"
         android:textColor="#5ddb8a"
         android:id="@+id/postDetails"
         android:textSize="23sp" />
 
     <EditText
+        android:background="@drawable/edittext_border"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
         android:id="@+id/post_editTextDetails"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:divider="#ff5ddb8a"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="Post Tags"
-        android:id="@+id/postTags" />
+        android:textColor="#5ddb8a"
+        android:id="@+id/postTags"
+        android:textSize="23sp"/>
 
     <EditText
+        android:background="@drawable/edittext_border"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
         android:id="@+id/post_editTextTags"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
         android:text="Post!"
         android:textColor="#ffffff"
         android:id="@+id/post_PostButton"
         android:layout_gravity="center_horizontal"
-        android:background="#5ddb8a"
+        android:background="@drawable/roundedbutton"
         android:textSize="20sp" />
 </LinearLayout>
