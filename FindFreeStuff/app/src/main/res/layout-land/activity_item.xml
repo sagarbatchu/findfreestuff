@@ -42,7 +42,7 @@
         android:textSize="30sp"
         android:textStyle="normal"
         android:textColor="#ffb50005"
-    android:id="@+id/item_Details" />
+        android:id="@+id/item_Details" />
 
     <Button
         android:layout_width="wrap_content"

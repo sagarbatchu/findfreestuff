@@ -58,7 +58,7 @@
         android:background="@drawable/roundedbutton"
         android:accessibilityLiveRegion="polite"
         android:text="Update WishList"
-
+        android:textSize="18sp"
         android:id="@+id/wishlist_updateButton" />
 
     <ListView

@@ -1,4 +1,5 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@android:style/Theme.Holo"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LoginActivity" >
 
@@ -9,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:longClickable="true"
-        android:background="#ff000000"
-        android:outlineProvider="bounds">
+        android:background="#000000">
 
         <LinearLayout
             style="@style/LoginFormContainer"
@@ -34,7 +34,6 @@
                 android:visibility="visible"
                 android:padding="5dip"
                 android:textSize="25dip"
-                android:drawableLeft="@drawable/ic_launcher"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite" />
 
@@ -46,39 +45,35 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:imeActionId="@+id/edittext_action_login"
                 android:imeActionLabel="@string/progress_login"
                 android:imeOptions="actionUnspecified"
-                android:typeface="sans"
-                android:accessibilityLiveRegion="polite"
-                android:layout_weight="10"
-                android:selectAllOnFocus="true"
-                android:phoneNumber="false"
-                android:password="true"
+                android:focusable="true"
+                android:enabled="true"
+                android:focusableInTouchMode="true"
+                android:visibility="visible"
                 android:padding="5dip"
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
-                android:outlineProvider="none" />
+                android:accessibilityLiveRegion="polite"
+                />
 
             <Button
                 android:id="@+id/action_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:text="login"
-                android:textAlignment="center"
+                android:layout_marginTop="128dp"
                 android:typeface="sans"
                 android:enabled="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:clickable="true"
-                android:backgroundTint="#ffb50005"
+                android:backgroundTint="#ff5ddb8a"
                 android:background="@drawable/roundedbutton"
-                android:accessibilityLiveRegion="polite" />
-
+                android:accessibilityLiveRegion="polite"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="login" />
         </LinearLayout>
     </ScrollView>
 
