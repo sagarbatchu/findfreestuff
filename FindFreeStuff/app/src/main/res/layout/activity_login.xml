@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:longClickable="true"
-        android:background="@android:color/holo_orange_light">
+        android:background="#ff000000">
 
         <LinearLayout
             style="@style/LoginFormContainer"
@@ -26,7 +26,8 @@
                 android:clickable="true"
                 android:ellipsize="middle"
                 android:textIsSelectable="true"
-                android:typeface="sans" />
+                android:typeface="sans"
+                android:textColor="#ffffff"/>
 
             <EditText
                 android:id="@+id/password"
@@ -38,7 +39,8 @@
                 android:singleLine="true"
                 android:imeActionId="@+id/edittext_action_login"
                 android:imeActionLabel="@string/progress_login"
-                android:imeOptions="actionUnspecified" />
+                android:imeOptions="actionUnspecified"
+                android:textColor="#ffffff"/>
 
             <Button
                 android:id="@+id/action_button"
