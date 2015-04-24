@@ -15,7 +15,7 @@
         android:id="@+id/item_TitleLabel"
         android:textColor="#ffb50005" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -34,7 +34,7 @@
         android:textColor="#ffb50005"
         android:id="@+id/item_DetailsLabel" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"

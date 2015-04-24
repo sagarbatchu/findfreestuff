@@ -72,12 +72,12 @@ public class ItemActivity extends Activity {
                     ParseGeoPoint location = item.getLocation();
 
                     //set up the title tags, and details views
-                    titleText = (EditText) findViewById(R.id.item_TitleText);
+                    titleText = (EditText) findViewById(R.id.item_Title);
                     detailsText = (EditText) findViewById(R.id.item_DetailsText);
                     //tagsText = (EditText) findViewById(R.id.item_TagsText);
                     titleText.setEnabled(false);
                     detailsText.setEnabled(false);
-                    tagsText.setEnabled(false);
+                    //tagsText.setEnabled(false);
 
                     //set up button
                     claimButton = (Button) findViewById(R.id.item_ClaimButton);
@@ -88,12 +88,12 @@ public class ItemActivity extends Activity {
                     if (item != null) {
 
                         //show the title, tags, and details
-                        titleText.setHint(item.getPostTitle());
-                        detailsText.setHint(item.getPostDetails());
-                        if (item.getTags() != null) {
-                            String tagsList = item.getTags();
-                            tagsText.setHint(tagsList);
-                        }
+                        titleText.setText(item.getPostTitle());
+                        detailsText.setText(item.getPostDetails());
+//                        if (item.getTags() != null) {
+//                            String tagsList = item.getTags();
+//                            tagsText.setHint(tagsList);
+//                        }
 
                         //get the item's user
                         ParseUser itemUser = null;
@@ -122,14 +122,13 @@ public class ItemActivity extends Activity {
                                 }
                             });
 
-                            /*make the delete button visible
                             deleteButton = (Button) findViewById(R.id.item_DeleteButton);
                             deleteButton.setVisibility(View.VISIBLE);
                             deleteButton.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     delete();
                                 }
-                            });*/
+                            });
 
 
                         }
@@ -214,9 +213,9 @@ public class ItemActivity extends Activity {
                         if (detailsText.getText().toString().trim().length() > 0) {
                             item.setPostDetails(detailsText.getText().toString());
                         }
-                        if (tagsText.getText().toString().trim().length() > 0) {
-                            item.setTags(tagsText.getText().toString());
-                        }
+                        //if (tagsText.getText().toString().trim().length() > 0) {
+                          //  item.setTags(tagsText.getText().toString());
+                        //}
                         titleText.setEnabled(false);
                         detailsText.setEnabled(false);
                         tagsText.setEnabled(false);
@@ -237,7 +236,7 @@ public class ItemActivity extends Activity {
         else {
             titleText.setEnabled(true);
             detailsText.setEnabled(true);
-            tagsText.setEnabled(true);
+            //tagsText.setEnabled(true);
             claimButton.setText(update);
             CharSequence msg = "You may now edit this post";
             int duration = Toast.LENGTH_LONG;
