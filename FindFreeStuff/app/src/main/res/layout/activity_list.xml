@@ -25,7 +25,7 @@
         android:layout_below="@+id/list_item"
         android:textStyle="bold"
         android:dividerHeight="3sp"
-        android:textSize="10sp"
+        android:textSize="20sp"
         android:textColor="#ff5ddb8a"
         android:divider="#ff5ddb8a" />
 

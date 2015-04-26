@@ -19,6 +19,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:id="@+id/item_TitleLabel"
+        android:layout_marginLeft="5dp"
         android:textColor="#ff5ddb8a" />
 
     <EditText
@@ -29,6 +30,7 @@
         android:textSize="30sp"
         android:textStyle="normal"
         android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_Title" />
 
     <TextView
@@ -38,6 +40,7 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_DetailsLabel" />
 
     <EditText
@@ -48,6 +51,7 @@
         android:textSize="30sp"
         android:textStyle="normal"
         android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_DetailsText" />
 
     <Button
@@ -55,7 +59,9 @@
         android:layout_height="wrap_content"
         android:text="Claim Item"
         android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_ClaimButton" />
+
 
     <CheckBox
         android:id="@+id/partialClaim"
@@ -63,7 +69,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ff5ddb8a"
-        android:text="@string/partial_claim" />
+        android:text="@string/partial_claim"
+        android:checked="false"
+        android:clickable="true"
+        android:enabled="true"
+        android:focusableInTouchMode="true" />
 
     <Button
         android:layout_width="wrap_content"
