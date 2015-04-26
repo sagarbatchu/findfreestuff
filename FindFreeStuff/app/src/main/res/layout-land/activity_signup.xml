@@ -1,33 +1,33 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginActivity" >
+    tools:context=".SignUpActivity">
 
     <!-- Login form -->
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/signup_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:longClickable="true"
-        android:background="#ff000000">
+        android:background="#000000">
 
         <LinearLayout
             style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <EditText
-                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:id="@+id/username_edit_text"
                 android:hint="@string/prompt_username"
                 android:textColorHint="#ff5ddb8a"
-                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:typeface="sans"
+                android:inputType="textEmailAddress"
                 android:clickable="true"
                 android:ellipsize="middle"
                 android:textIsSelectable="true"
+                android:typeface="sans"
                 android:focusable="true"
                 android:enabled="true"
                 android:focusableInTouchMode="true"
@@ -36,21 +36,19 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3sp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5sp"
                 android:hint="@string/prompt_password"
                 android:textColorHint="#ff5ddb8a"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:imeActionId="@+id/edittext_action_login"
-                android:imeActionLabel="@string/progress_login"
-                android:imeOptions="actionUnspecified"
                 android:clickable="true"
                 android:ellipsize="middle"
                 android:textIsSelectable="true"
@@ -65,17 +63,46 @@
                 android:accessibilityLiveRegion="polite"
                 android:textColor="#000000"/>
 
-
+            <EditText
+                android:id="@+id/password_again_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="5sp"
+                android:hint="@string/prompt_password_again"
+                android:textColorHint="#ff5ddb8a"
+                android:inputType="textPassword"
+                android:clickable="true"
+                android:ellipsize="middle"
+                android:textIsSelectable="true"
+                android:typeface="sans"
+                android:focusable="true"
+                android:enabled="true"
+                android:focusableInTouchMode="true"
+                android:visibility="visible"
+                android:padding="5dip"
+                android:textSize="25dip"
+                android:background="@drawable/rounded_edittext_states"
+                android:accessibilityLiveRegion="polite"
+                android:textColor="#000000"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:imeActionId="@+id/edittext_action_signup"
+                android:imeActionLabel="@string/signup"
+                android:imeOptions="actionUnspecified" />
 
             <Button
                 android:id="@+id/action_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="login" />
+                android:text="@string/signup"
+                android:background="@drawable/roundedbutton"
+                android:textColor="#ffffff" />
         </LinearLayout>
     </ScrollView>
 

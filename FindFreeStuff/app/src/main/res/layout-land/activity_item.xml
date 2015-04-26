@@ -2,18 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff000000" >
+    android:background="#ff000000"
+    android:focusable="true"
+    android:baselineAligned="false"
+    android:clickable="true"
+    android:divider="@android:color/holo_blue_dark"
+    android:id="@+id/item_TitleText">
+
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Free Item"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:textAlignment="center"
         android:id="@+id/item_TitleLabel"
-        android:textColor="#ffb50005" />
+        android:layout_marginLeft="5dp"
+        android:textColor="#ff5ddb8a" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -22,7 +29,8 @@
         android:text="Title"
         android:textSize="30sp"
         android:textStyle="normal"
-        android:textColor="#ffb50005"
+        android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_Title" />
 
     <TextView
@@ -31,7 +39,8 @@
         android:text="Details:"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:textColor="#ffb50005"
+        android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_DetailsLabel" />
 
     <EditText
@@ -41,22 +50,38 @@
         android:text="Details"
         android:textSize="30sp"
         android:textStyle="normal"
-        android:textColor="#ffb50005"
-        android:id="@+id/item_Details" />
+        android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/item_DetailsText" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Claim Item"
-        android:textColor="#ffb50005"
+        android:textColor="#ff5ddb8a"
+        android:layout_marginLeft="5dp"
         android:id="@+id/item_ClaimButton" />
+
 
     <CheckBox
         android:id="@+id/partialClaim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffb50005"
-        android:text="@string/partial_claim" />
+        android:textColor="#ff5ddb8a"
+        android:text="@string/partial_claim"
+        android:checked="false"
+        android:clickable="true"
+        android:enabled="true"
+        android:focusableInTouchMode="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:id="@+id/item_DeleteButton"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"
+        android:enabled="false" />
 
 </LinearLayout>

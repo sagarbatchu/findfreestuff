@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Username:"
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_nameText"
+        android:textSize="23sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SetToUsername"
+        android:textColor="#ffffff"
+        android:id="@+id/preferences_Username"
+        android:textSize="19sp"
+        android:singleLine="true"
+        android:visibility="visible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Maximum Item Distance:"
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_ItemDistanceTitle"
+        android:textSize="23sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SetToItemDistance"
+        android:textColor="#ffffff"
+        android:id="@+id/preferences_ItemDistance"
+        android:textSize="19sp" />
+
+    <EditText
+        android:background="@drawable/edittext_border"
+        android:layout_width="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_height="30dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/preferences_ItemDistanceField"
+        android:textColor="#ffffff"
+        android:textSize="17sp"
+        android:singleLine="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Update Distance"
+        android:textColor="#ffffff"
+        android:background="@drawable/roundedbutton"
+        android:id="@+id/preferences_setDistanceButton"
+        android:layout_gravity="right" />
+
+    <Button
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="View Wishlist"
+        android:id="@+id/preferences_wishlistButton"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/roundedbutton"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="My Items:"
+        android:textColor="#5ddb8a"
+        android:id="@+id/preferences_MyPostsTitle"
+        android:textSize="23sp" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="154dp"
+        android:id="@+id/preferences_ListOfItems"
+        android:layout_gravity="center_horizontal"
+        android:headerDividersEnabled="false"
+        android:divider="#5ddb8a"
+        android:stackFromBottom="false"
+        android:dividerHeight="3sp"
+        android:textSize="5sp"
+        android:textColor="#ff5ddb8a"
+        android:nestedScrollingEnabled="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:layout_margin="2dp"
+        android:text="Logout"
+        android:textColor="#ffffff"
+        android:background="@drawable/roundedbutton"
+        android:id="@+id/logout_button"
+        android:nestedScrollingEnabled="false" />
+
+</LinearLayout>

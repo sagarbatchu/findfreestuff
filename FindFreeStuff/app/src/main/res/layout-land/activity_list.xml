@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@android:style/Theme.Holo"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ff000000">
@@ -8,8 +9,9 @@
         android:layout_height="wrap_content"
         android:text="List of Free Items"
         android:textSize="30sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ff5ddb8a"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:typeface="normal"
         android:id="@+id/list_item"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -23,8 +25,8 @@
         android:layout_below="@+id/list_item"
         android:textStyle="bold"
         android:dividerHeight="3sp"
-        android:textSize="10sp"
-        android:divider="#ff5ddb8a"/>
-
+        android:textSize="20sp"
+        android:textColor="#ff5ddb8a"
+        android:divider="#ff5ddb8a" />
 
 </RelativeLayout>

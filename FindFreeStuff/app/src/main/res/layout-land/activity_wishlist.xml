@@ -18,7 +18,8 @@
         android:id="@+id/wishlist_title" />
 
     <EditText
-        android:hint="@string/prompt_username"
+        android:hint="@string/prompt_item"
+        android:textColorHint="#ff5ddb8a"
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:singleLine="true"
@@ -37,8 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/wishlist_tags"
-        android:text="Add To Wish List"
-        android:textColor="#ffffffff" />
+        android:textColor="#000000" />
 
     <Button
 
@@ -59,7 +59,6 @@
         android:background="@drawable/roundedbutton"
         android:accessibilityLiveRegion="polite"
         android:text="Update WishList"
-        android:textSize="18sp"
         android:id="@+id/wishlist_updateButton" />
 
     <ListView
