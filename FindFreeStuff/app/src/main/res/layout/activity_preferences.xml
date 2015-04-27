@@ -51,7 +51,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/preferences_ItemDistanceField"
-        android:textColor="#ffffff"
+        android:textColor="#ff000000"
         android:textSize="17sp"
         android:singleLine="true" />
 

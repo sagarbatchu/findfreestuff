@@ -36,7 +36,7 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000"/>
+                android:textColor="#ff5ddb8a"/>
 
             <EditText
                 android:id="@+id/password"
@@ -63,7 +63,7 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000"/>
+                android:textColor="#ff5ddb8a"/>
 
 
 
