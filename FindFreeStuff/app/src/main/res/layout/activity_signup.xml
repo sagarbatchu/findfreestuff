@@ -36,7 +36,7 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000" />
+                android:textColor="#ff5ddb8a" />
 
             <EditText
                 android:id="@+id/password_edit_text"
@@ -61,7 +61,7 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000"/>
+                android:textColor="#ff5ddb8a"/>
 
             <EditText
                 android:id="@+id/password_again_edit_text"
@@ -84,7 +84,7 @@
                 android:textSize="25dip"
                 android:background="@drawable/rounded_edittext_states"
                 android:accessibilityLiveRegion="polite"
-                android:textColor="#000000"
+                android:textColor="#ff5ddb8a"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:imeActionId="@+id/edittext_action_signup"
