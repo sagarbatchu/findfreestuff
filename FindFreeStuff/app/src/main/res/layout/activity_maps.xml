@@ -53,6 +53,7 @@
         <EditText android:id="@+id/search_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#fffcffea"
             android:hint="@string/start_search" />
         <Button
             android:id="@+id/button_search"
