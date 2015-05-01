@@ -35,7 +35,7 @@ public class ItemActivity extends Activity {
     private Button deleteButton;
     private EditText titleText;
     private EditText detailsText;
-    private EditText tagsText;
+    //private EditText tagsText;
     //data references
     private ParseGeoPoint geopoint;
     private FreeItem item;
@@ -218,7 +218,7 @@ public class ItemActivity extends Activity {
                         //}
                         titleText.setEnabled(false);
                         detailsText.setEnabled(false);
-                        tagsText.setEnabled(false);
+                        //tagsText.setEnabled(false);
                         editUpdateButton.setText(edit);
 
                         //let user know the post updated
